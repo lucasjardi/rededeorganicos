@@ -1,0 +1,185 @@
+/* ............................ G E R A L .............................. */
+
+body {
+	background-image: url('../img/background.jpg') !important;
+	/* background-color: #ecf0f1 !important; */
+	background-attachment: fixed;
+	background-repeat: no-repeat; 
+	background-size: 100%;
+	background-size: cover; 
+}
+
+/* ............................ I N D E X .............................. */
+
+.logo {
+	width: 250px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 100px;
+}
+
+#logo {
+	width: 250px;
+	border: 5px;
+	border-radius: 15px;
+	border-style: solid;
+}
+
+.formLogin {
+	background-image: url('../img/backgroundForm.png');
+	border: 2px;
+	border-color: #9dc2c4;
+	border-radius: 5px;
+	border-style: solid;
+	width: 30%;
+	min-width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 50px;
+} 
+
+#email {
+	width: 100%;
+}
+
+#senha {
+	width: 100%;
+}
+
+.vermelho{
+	color: red;
+	font-weight: bold;
+	float: left;
+}
+
+#esqueci {
+	float: right;
+	color: black;
+}
+
+#esqueci:hover {
+	float: right;
+	color: blue;
+}
+
+.login {
+	width: 100%;
+	min-width: 180px;
+    background-color: #009cff; 
+    color: white;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+	border: 2px solid #d9d9d9;
+	border-radius: 8px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.login:hover {
+	width: 100%;
+    background-color: #74c8fd;
+    color: #2068fc;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+	border: 2px solid #2068fc;
+	border-radius: 8px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.cadastrar {
+	width: 100%;
+    background-color: #ff9600; 
+    color: white;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+	border: 2px solid #d9d9d9;
+	border-radius: 8px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.cadastrar:hover {
+	width: 100%;
+    background-color: #ffc571;
+    color: #ff9600;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+	border: 2px solid #ff9600;
+	border-radius: 8px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+
+/* ............................ H I S T O R I A ........................ */
+
+.historia {
+	width: 70%;
+	min-width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 100px;
+	background-image: url('../img/backgroundForm.png');
+	border: 2px;
+	border-color: #9dc2c4;
+	border-radius: 5px;
+	border-style: solid;
+}
+
+.logoHistoria {
+	width: 250px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+}
+
+#tituloHistoria {
+	text-align: center;
+}
+
+#paragrafoHistoria {
+	margin-left: 5%;
+	margin-right: 5%;
+}
+
+/* ............................ ........................ */
+
+.main{
+	margin-top: 80px;
+}
+
+select[readonly] {
+  background: #eee;
+  pointer-events: none;
+  touch-action: none;
+}
+
+
+.bg-analise{background-color: #81ecec !important;}
+.bg-aguardando{background-color:#ffeaa7 !important;}
+.bg-confirmado{background-color: #b8e994 !important;}
+.bg-cancelado{background-color: #fab1a0 !important;}
+
+.float-button{
+	position: fixed !important; 
+	bottom: 8px !important; 
+	right: 8px !important; 
+	padding: 3px !important;
+}
