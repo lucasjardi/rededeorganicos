@@ -5,19 +5,24 @@
     @isset ($produtos)
       <form action="{{ route('pesquisaProduto') }}" method="get">
         <div class="row no-gutters">
-          <div class="col-6">
+          <div class="col">
               <div class="form-group">
               <input type="text" name="nome" placeholder="Pesquisar" class="form-control" value="{{isset($pesquisa) ? $pesquisa : ''}}">
               </div>
           </div>
-          <div class="col-2">
+          <div class="col">
             <div class="form-group">
-                <button class="btn btn-primary">Pesquisar</button>
+                <button class="btn btn-primary">
+                  <i class="fa fa-search"></i>
+                  @if(!$isMobile)<span>Pesquisar</span>@endif
+                </button>
             </div>
           </div>
-          <div class="col-2">
+          <div class="col text-right">
             <div class="form-group">
-                <a href="{{ url('/produtos') }}" class="btn btn-light"><i class="fa fa-times"></i> Limpar Pesquisa</a>
+                <a href="{{ url('/produtos') }}" class="btn btn-light">
+                  <i class="fa fa-times"></i> Limpar
+                </a>
             </div>
           </div>
         </div>

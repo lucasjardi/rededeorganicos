@@ -11,6 +11,7 @@ use App\Cliente;
 use App\Cidade;
 use App\Pedido;
 use App\StatusPedido;
+use App\User;
 use Auth;
 
 class UsersController extends Controller
@@ -98,5 +99,21 @@ class UsersController extends Controller
         // $statusespedidos = StatusPedido::all()->toArray();
 
         return view('pedidos')->with(['pedidos' => $pedidos]);
+    }
+
+
+    public function getClientes()
+    {
+        $term = $_GET['term'];
+        $clientes = User::where('codNivel',5)->where('name','like','%'.$term.'%')->get();
+        $clientesNome = array();
+        $clients = array();
+        foreach ($clientes as $cliente){
+            // $clientesNome[ $cliente->id ] = $cliente->name;
+            $clientesNome["id"] = $cliente->id;
+            $clientesNome["value"] = $cliente->name;
+            array_push($clients, $clientesNome);
+        }
+        return $clients;
     }
 }

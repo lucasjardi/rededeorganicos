@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Produto;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Jenssegers\Agent\Agent;
 use Auth;
 
 class ProdutosController extends Controller
@@ -16,6 +17,8 @@ class ProdutosController extends Controller
     	// $produtos = Produto::with('unidade')->paginate(10);
         $produtos = null;
         $aviso = false;
+
+        $agent = new Agent();
         
     	if (Auth::user()->codNivel == 4) {
             $produtos = DB::table("produto")->select('*')
@@ -32,7 +35,7 @@ class ProdutosController extends Controller
         } else {
             $produtos = Produto::where('ativo',1)->paginate(40);
         }
-    	return view('produtos')->with(['produtos' => $produtos, 'init' => true, 'aviso' => $aviso]);
+    	return view('produtos')->with(['produtos' => $produtos, 'init' => true, 'aviso' => $aviso, 'isMobile' => $agent->isMobile()]);
     }
 
 
@@ -104,9 +107,10 @@ class ProdutosController extends Controller
 
     public function pesquisaPorNome(Request $request)
     {
+        $agent = new Agent();
         $produtos = Produto::
                     where( 'nome', 'LIKE', '%' . $request->nome . '%' )
                     ->get();
-        return view('produtos')->with(['produtos' => $produtos, 'pesquisa' => $request->nome]);
+        return view('produtos')->with(['produtos' => $produtos, 'pesquisa' => $request->nome, 'isMobile' => $agent->isMobile()]);
     }
 }

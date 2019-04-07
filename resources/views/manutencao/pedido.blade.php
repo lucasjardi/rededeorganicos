@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="shadow-sm container p-3 rounded" style="background: rgba(255,255,255,0.2)">
-  <div class="bg-white p-5">
+<div class="{{!$isMobile?'shadow-sm container p-3 rounded':''}}" style="background: rgba(255,255,255,0.2)">
+  <div class="bg-white p-3">
       @if ($errors->any())
           <div class="alert alert-danger alert-dismissible fade show">
               <ul>
@@ -35,70 +35,76 @@
       @endif
 
       @if ( Request::is('*/novo') )
-        {!! Form::label('codCliente','Cliente') !!}
-        {{ Form::select('codCliente',$clientes,null, ['class' => 'form-control']) }}
+        <label for="nomeCliente">Cliente (Obrigatório) <small class="text-secondary">(Comece a digitar o nome do cliente para escolher)</small></label>
+        <input class="form-control" id="nomeCliente">
+        <input type="hidden" name="codCliente" id="codCliente" value="">
       @endif
-      {!! Form::label('codDestino','Destino') !!}
+      {!! Form::label('codDestino','Destino (Obrigatório)') !!}
       {{ Form::select('codDestino',$destinos,null, ['class' => 'form-control']) }}
-      {!! Form::label('valor','Valor (R$)') !!}
-      {!! Form::input('text','valor',null, ['class' => 'form-control', 'placeholder' => 'R$ 00,00']) !!}
-      {!! Form::label('status','Status') !!}
+      {!! Form::label('valor','Valor (R$) (Obrigatório)') !!}
+      {!! Form::input('text','valor',null, ['class' => 'form-control', 'placeholder' => '00,00']) !!}
+      {!! Form::label('status','Status (Obrigatório)') !!}
       {{ Form::select('status',$statuses,null, ['class' => 'form-control']) }}
 
-      {!! "<br><br>" !!}
+      {!! "<br>" !!}
       {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}
       {!! Form::close() !!}
 
       <hr>
+      @if (!isset($pedido))
+      <div class="alert alert-info">
+          Você só pode adicionar itens ao pedido depois de salvar o pedido.
+      </div>
+      @endif
       <label><b>Itens do Pedido</b></label>
-      {{-- <button class="btn btn-primary btn-sm" id="adicionarItem" onclick="event.preventDefault();"><i class="fa fa-plus"></i> Adicionar</button> --}}
-
+      @if (isset($pedido))
       <form action="{{ url('/itempedido/'. $pedido->codigo) }}" method="POST">
         @csrf
         <div class="row">
-          <div class="col">
-            <div class="form-group">
-              <label>Produto (CÓDIGO): </label>
-              <input class="form-control" list="produtosDataList" name="codProduto">
+            <div class="col">
+              <div class="form-group">
+                <label>Produto (CÓDIGO): </label>
+                <input class="form-control" list="produtosDataList" name="codProduto">
 
-              <datalist id="produtosDataList">
-                @foreach ($produtos as $produto)
-                  <option value="{{$produto->codigo}}">{{$produto->nome}}</option>
-                @endforeach
-              </datalist>
+                <datalist id="produtosDataList">
+                  @foreach ($produtos as $produto)
+                    <option value="{{$produto->codigo}}">{{$produto->nome}}</option>
+                  @endforeach
+                </datalist>
+              </div>
             </div>
-          </div>
-          <div class="col">
-            <div class="form-group">
-              <label>Quantidade: </label>
-              <input class="form-control" type="text" name="quantidade">
+            <div class="col">
+              <div class="form-group">
+                <label>Quantidade: </label>
+                <input class="form-control" type="text" name="quantidade">
+              </div>
             </div>
-          </div>
-          <div class="col">
-            <div class="form-group">
-              <label>Unidade: </label>
-              <select class="form-control" name="unidade">
-                <option></option>
-                @foreach ($unidades as $unidade)
-                  <option value="{{$unidade->descricao}}">{{$unidade->descricao}}</option>
-                @endforeach
-              </select>
+            <div class="col">
+              <div class="form-group">
+                <label>Unidade: </label>
+                <select class="form-control" name="unidade">
+                  <option></option>
+                  @foreach ($unidades as $unidade)
+                    <option value="{{$unidade->descricao}}">{{$unidade->descricao}}</option>
+                  @endforeach
+                </select>
+              </div>
             </div>
-          </div>
-          <div class="col">
-            <div class="form-group">
-              <label>Valor Total (R$): </label>
-              <input class="form-control" type="text" name="valorTotal">
+            <div class="col">
+              <div class="form-group">
+                <label>Valor Total (R$): </label>
+                <input class="form-control" type="text" name="valorTotal">
+              </div>
             </div>
-          </div>
 
-          <div class="col">
-            <div class="form-group">
-              <button class="btn btn-primary form-control" style="margin-top: 20px !important">Adicionar</button>
+            <div class="col">
+              <div class="form-group">
+                <button class="btn btn-primary form-control" style="margin-top: 20px !important">Adicionar</button>
+              </div>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
+      @endif
 
       <table id="produtos" class="table table-striped table-hover">
         <thead class="thead-dark">

@@ -77,6 +77,9 @@ Route::prefix('user')->middleware('auth','verificarhorarioacesso')->group(functi
     Route::get('/pedidos','UsersController@getPedidosUser')->name('user.pedidos');
 });
 
+Route::post('/grupos','ManutencaoController@saveGroup');
+Route::get('/clientes','UsersController@getClientes');
+
 Route::get('forbidden', function()
 {
    return view('forbidden');

@@ -47,6 +47,12 @@ class PedidosController extends Controller
 
     public function save(Request $request)
     {
+        $request->merge(['valor' => str_replace(",",".",$request->valor)]);
+        $this->validate($request, [
+            'codCliente' => 'required',
+            'valor' => 'required'
+        ]);
+
         $pedido = Pedido::create( $request->all() + ["dataPedido"=> Carbon::now()]);
 
         if ($request->has("codProduto")) {
@@ -68,7 +74,7 @@ class PedidosController extends Controller
 
         \Session::flash('mensagem_sucesso', 'Pedido criado com sucesso!');
 
-        return back();
+        return redirect('manutencao/pedido/'.$pedido->codigo.'/editar');
     }
 
     public function store(Request $request)
@@ -146,7 +152,12 @@ class PedidosController extends Controller
      */
     public function update(Request $request, Pedido $pedido)
     {
+        $this->validate($request, [
+            'valor' => 'required',
+            'codCliente' => 'required'
+        ]);
         $enviarEmailConfirmado = $pedido->status != 3 && $request->status == 3;
+        $request->merge(['valor' => str_replace(",",".",$request->valor)]);
         $pedido->update($request->all());
 
         if( $enviarEmailConfirmado ) {

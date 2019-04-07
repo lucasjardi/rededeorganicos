@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="shadow-sm container p-3 rounded" style="background: rgba(255,255,255,0.2)">
+<div class="{{!$isMobile?'shadow-sm container p-3 rounded':''}}" style="background: rgba(255,255,255,0.2)">
   @if( Session::has('mensagem_sucesso') )
       <div class="alert alert-success alert-dismissible fade show">
           {{ Session::get('mensagem_sucesso') }}
@@ -10,15 +10,17 @@
           </button>
       </div>
   @endif
-  <div class="bg-white p-5">
-     <a href="{{ route('manutencao.novo.pedido') }}" class="btn btn-primary float-right" style="margin-top: -40px"><i class="fa fa-plus"></i> Cadastrar Novo</a>
+    <div class="bg-white pt-5 {{!$isMobile?'p-3':''}}">
+     <div class="m-auto pb-3" style="{{!$isMobile?'width: 150px':''}}">
+        <a href="{{ route('manutencao.novo.pedido') }}" class="btn btn-outline-primary {{$isMobile?'btn-block':''}}" style="margin-top: -40px"><i class="fa fa-plus"></i> Cadastrar Novo</a>
+     </div>
       <table id="produtos" class="table table-striped table-hover">
         <thead class="thead-dark">
           <th scope="col">#</th>
           <th scope="col">Cliente</th>
           <th scope="col">Data do Pedido</th>
           <th scope="col">Valor</th>
-          <th>Ações</th>
+          <th class="text-right">Ações</th>
         </thead>
 
         <tbody>
@@ -28,7 +30,7 @@
               <td>{{ $pedido->usuario->name }}</td>
               <td>{{ $pedido->dataPedido }}</td>
               <td>{{ $pedido->valor }}</td>
-              <td>
+              <td class="text-right">
                 <a href="{{ url('manutencao/pedido/' . $pedido->codigo . '/editar') }}">
                   <i class="fa fa-edit text-primary"></i>
                 </a>&nbsp;

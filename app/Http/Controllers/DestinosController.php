@@ -12,7 +12,13 @@ class DestinosController extends Controller
     
     public function store(Request $request)
     {
-    	Destino::create( $request->all() );
+        $this->validate($request, [
+            'descricao' => 'required'
+        ]);
+    	Destino::create( [
+            "descricao" => $request->descricao,
+            "acrescimo" => $request->acrescimo != '' ? $request->acrescimo : 0
+        ] );
 
     	\Session::flash('mensagem_sucesso', 'Local de Entrega criado com sucesso!');
 
@@ -22,7 +28,13 @@ class DestinosController extends Controller
 
     public function update(Request $request, Destino $destino)
     {
-    	$destino->update( $request->all() );
+        $this->validate($request, [
+            'descricao' => 'required'
+        ]);
+    	$destino->update( [
+            "descricao" => $request->descricao,
+            "acrescimo" => $request->acrescimo != '' ? $request->acrescimo : 0
+        ] );
 
     	\Session::flash('mensagem_sucesso', 'Local de Entrega atualizado com sucesso!');
 

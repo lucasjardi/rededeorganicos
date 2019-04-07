@@ -2,6 +2,18 @@ $(function () {
 	$('#produtos').DataTable();
 	$('[data-toggle="tooltip"]').tooltip();
 	$('#exampleModal').modal('show');
+
+	$('#valor').mask('#.##0,00', {reverse: true});
+	$('#acrescimo').mask('#.##0,00', {reverse: true});
+
+	$("#nomeCliente" ).autocomplete({
+		source: "/clientes",
+		select: function( event, ui ) {
+			// console.log("Selected: " + ui.item.id);
+			$("#codCliente").val(ui.item.id);
+		}
+	});
+
 	if ($(window).width() < 768) {
 	    // do something for small screens
 	    $("#produtos").addClass("table-responsive");
@@ -23,6 +35,35 @@ $(function () {
 $("#addNaCesta").click(function() {
 	$('#selectlocalretirada').prop('disabled', 'disabled');
 $('#btnlocalretirada').prop('disabled', 'disabled');
+});
+
+$("#criarNovoGrupo").click(function () {
+	$('#criarGrupo').modal('show');
+
+	event.preventDefault();
+});
+
+$("#btnSalvarGrupo").click(function () {
+	let descricao = $("#grupoDescricao").val();
+	if(descricao) {
+		axios.post('/grupos', {
+			descricao: descricao
+		})
+		.then(function (response) {
+			console.log(response);
+	
+			let o = new Option(response.data.descricao, response.data.codigo);
+			/// jquerify the DOM object 'o' so we can use the html method
+			$(o).html(response.data.descricao);
+			$("#codGrupo").append(o);
+			$('#criarGrupo').modal('toggle');
+			$("#grupoDescricao").val("");
+			$('#codGrupo').val(response.data.codigo);
+		})
+		.catch(function (error) {
+			alert("Ocorreu um erro. Recarregue a pagina e tente de novo.");
+		});
+	}
 });
 
 $(window).resize(function(){

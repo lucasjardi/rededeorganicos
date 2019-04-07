@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="shadow-sm container p-3 rounded" style="background: rgba(255,255,255,0.2)">
+<div class="{{!$isMobile?'shadow-sm container p-3 rounded':''}}" style="background: rgba(255,255,255,0.2)">
   @if( Session::has('mensagem_sucesso') )
       <div class="alert alert-success alert-dismissible fade show">
           {{ Session::get('mensagem_sucesso') }}
@@ -10,16 +10,29 @@
           </button>
       </div>
   @endif
-  <div class="bg-white p-5">
-    <a href="{{ Request::is('*/desativados')?route('manutencao.produtos'):route('manutencao.produtos.desativados') }}" class="btn btn-secondary float-right" style="margin-top: -40px; margin-right: 150px">Listar Produtos {{Request::is('*/desativados')?"Ativados":"Desativados" }}</a>
-    <a href="{{ route('manutencao.novo.produto') }}" class="btn btn-primary float-right" style="margin-top: -40px"><i class="fa fa-plus"></i> Cadastrar Novo</a>
+  <div class="bg-white p-3">
+    <div style="width:{{$isMobile?'210px':'327px'}};margin: 0 auto">
+      <div class="btn-group pb-3">
+          <label class="btn btn-outline-dark" 
+                onclick="location.href='{{ Request::is('*/desativados')?route('manutencao.produtos'):route('manutencao.produtos.desativados') }}'" >
+              <i class="fa fa-list"></i> Listar {{Request::is('*/desativados')?"Ativados":"Desativados" }}
+          </label>
+          <label class="btn btn-outline-primary" onclick="location.href='{{ route('manutencao.novo.produto') }}'" >
+              @if ($isMobile)
+                <i class="fa fa-plus"></i>
+              @else
+                <i class="fa fa-plus"></i> Cadastrar Novo
+              @endif
+          </label>
+      </div>
+    </div>
       <table id="produtos" class="table table-striped table-hover">
         <thead class="thead-dark">
           <th scope="col">#</th>
           <th scope="col">Nome</th>
           <th scope="col">Unidade</th>
           <th scope="col">Grupo</th>
-          <th scope="col">Ações</th>
+          <th class="text-right" scope="col">Ações</th>
         </thead>
 
         <tbody>
@@ -30,7 +43,7 @@
             style="cursor: pointer">{{ $produto->nome }}</td>
               <td>{{ $produto->unidade->descricao }}</td>
               <td>{{ $produto->grupo->descricao }}</td>
-              <td>
+              <td class="text-right">
                 <a href="{{ url('manutencao/produto/' . $produto->codigo . '/editar') }}">
                   <i class="fa fa-edit text-primary"></i>
                 </a>&nbsp;

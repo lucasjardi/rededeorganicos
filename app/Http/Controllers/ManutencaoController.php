@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
 use App\Destino;
 use App\Produto;
@@ -14,17 +15,22 @@ use App\User;
 
 class ManutencaoController extends Controller
 {
+    private $agent;
+
+    public function __construct() {
+        $this->agent = new Agent();
+    }
     
     public function produtos()
     {
         $produtos = Produto::with('unidade','grupo')->where('ativo',1)->get();
-    	return view('manutencao.produtos')->with(['produtos' => $produtos]);
+    	return view('manutencao.produtos')->with(['produtos' => $produtos, 'isMobile' => $this->agent->isMobile()]);
     }
 
     public function produtosdesativados()
     {
         $produtosDesativados = Produto::with('unidade','grupo')->where('ativo',0)->get();
-        return view('manutencao.produtos')->with(['produtos' => $produtosDesativados]);
+        return view('manutencao.produtos')->with(['produtos' => $produtosDesativados, 'isMobile' => $this->agent->isMobile()]);
     }
 
     public function novoProduto()
@@ -41,7 +47,7 @@ class ManutencaoController extends Controller
             $gruposNome[ $grupo->codigo ] = $grupo->descricao;
         }
 
-         return view('manutencao.produto')->with(['unidades' => $unidadesNome, 'grupos' => $gruposNome]);
+         return view('manutencao.produto')->with(['unidades' => $unidadesNome, 'grupos' => $gruposNome, 'isMobile' => $this->agent->isMobile()]);
     }
 
     public function editProduto(Produto $produto)
@@ -58,7 +64,7 @@ class ManutencaoController extends Controller
             $gruposNome[ $grupo->codigo ] = $grupo->descricao;
         }
 
-        return view('manutencao.produto')->with(['produto' => $produto, 'unidades' => $unidadesNome, 'grupos' => $gruposNome]);
+        return view('manutencao.produto')->with(['produto' => $produto, 'unidades' => $unidadesNome, 'grupos' => $gruposNome, 'isMobile' => $this->agent->isMobile()]);
     }
 
     public function editPedido(Pedido $pedido)
@@ -86,39 +92,45 @@ class ManutencaoController extends Controller
 
         $unidades = Unidade::all();
 
-        return view('manutencao.pedido')->with(['pedido' => $ped, 'destinos' => $destinosNome, 'statuses' => $statusesNome, 'clientes' => $clientesNome, 'produtos' => $produtos, 'unidades' => $unidades]);
+        return view('manutencao.pedido')->with(['pedido' => $ped, 'destinos' => $destinosNome, 'statuses' => $statusesNome, 'clientes' => $clientesNome, 'produtos' => $produtos, 'unidades' => $unidades, 'isMobile' => $this->agent->isMobile()]);
     }
 
     public function novoLocal()
     {
-        return view('manutencao.local');
+        return view('manutencao.local')->with(['isMobile' => $this->agent->isMobile()]);
     }
 
     public function editLocal(Destino $destino)
     {
-        return view('manutencao.local')->with(['destino' => $destino]);
+        return view('manutencao.local')->with(['destino' => $destino, 'isMobile' => $this->agent->isMobile()]);
     }
 
     public function solicitacoes()
     {
         $solicitacoes = Solicitacao::all();
-        return view('manutencao.solicitacoes')->with(['solicitacoes' => $solicitacoes]);
+        return view('manutencao.solicitacoes')->with(['solicitacoes' => $solicitacoes, 'isMobile' => $this->agent->isMobile()]);
     }
 
     public function pedidos()
     {
         $pedidos = Pedido::with('usuario','destino')->get();
-    	return view('manutencao.pedidos')->with(['pedidos' => $pedidos]);
+    	return view('manutencao.pedidos')->with(['pedidos' => $pedidos, 'isMobile' => $this->agent->isMobile()]);
     }
 
     public function usuarios()
     {
-    	return view('manutencao.usuarios');
+    	return view('manutencao.usuarios')->with(['isMobile' => $this->agent->isMobile()]);;
     }
 
     public function locais()
     {
         $destinos = Destino::all();
-       return view('manutencao.locais')->with(['destinos' => $destinos]);
+       return view('manutencao.locais')->with(['destinos' => $destinos, 'isMobile' => $this->agent->isMobile()]);
+    }
+
+
+    public function saveGroup(Request $request)
+    {
+        return Grupo::create($request->all());
     }
 }

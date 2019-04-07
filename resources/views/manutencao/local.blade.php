@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="shadow-sm container p-3 rounded" style="background: rgba(255,255,255,0.2)">
-  <div class="bg-white p-5">
+<div class="{{!$isMobile?'shadow-sm container p-3 rounded':''}}" style="background: rgba(255,255,255,0.2)">
+  <div class="bg-white p-3">
       @if ($errors->any())
           <div class="alert alert-danger alert-dismissible fade show">
               <ul>
@@ -35,7 +35,7 @@
         {!! Form::open(['url' => 'locais/salvar']) !!}
       @endif
 
-      {!! Form::label('descricao','Descrição') !!}
+      {!! Form::label('descricao','Descrição (Obrigatório)') !!}
       {!! Form::input('text','descricao',null, ['class' => 'form-control', 'placeholder' => 'Nome do Local']) !!}
       {!! Form::label('acrescimo','Acréscimo') !!}
       {!! Form::input('text','acrescimo',null, ['class' => 'form-control', 'placeholder' => '0.00']) !!}
