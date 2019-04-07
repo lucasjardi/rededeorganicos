@@ -19,7 +19,8 @@ class VerificarHorarioAcesso
     {
         $now =  \Carbon\Carbon::now();
         $diaDaSemana = $now->dayOfWeek;
-        $podeEntrar = App::environment('local') ? true : false;
+        //$podeEntrar = App::environment('local') ? true : false;
+	$podeEntrar = true;
 
         if(!$podeEntrar) {
             if (  $request->user()->codNivel == 5 ) { // Cliente

@@ -27,7 +27,7 @@ class UsersController extends Controller
 
     	$solicitacao = Solicitacao::create($request->all());
 
-        Mail::to("super@tst.com")->send(new SolicitacaoCadastrada($solicitacao)); // mudar depois para email admin
+        Mail::to("rededeorganicososorio@gmail.com")->send(new SolicitacaoCadastrada($solicitacao)); // mudar depois para email admin
 
     	\Session::flash('mensagem_sucesso', 'Solicitação Enviada! Assim que seu cadastro estiver liberado você irá receber por email um aviso!');
 
