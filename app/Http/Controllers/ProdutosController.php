@@ -15,17 +15,24 @@ class ProdutosController extends Controller
     {
     	// $produtos = Produto::with('unidade')->paginate(10);
         $produtos = null;
+        $aviso = false;
         
     	if (Auth::user()->codNivel == 4) {
             $produtos = DB::table("produto")->select('*')
             ->whereNOTIn('codigo',function($query){
                $query->select('codProduto')->from('produtor_produz');
             })
+            ->where('ativo',1)
             ->paginate(40);
+
+            $countProdutorProduz = DB::table('produtor_produz')
+            ->where('codProdutor',Auth::user()->id)
+            ->count();
+            $aviso = $countProdutorProduz == 0 ? true : false;
         } else {
-            $produtos = Produto::paginate(40);
+            $produtos = Produto::where('ativo',1)->paginate(40);
         }
-    	return view('produtos')->with(['produtos' => $produtos, 'init' => true]);
+    	return view('produtos')->with(['produtos' => $produtos, 'init' => true, 'aviso' => $aviso]);
     }
 
 

@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="shadow-lg p-4 mb-5 bg-white rounded" style="padding: 50px">
-      <h1 class="font-italic"><i class="fas fa-shopping-cart"></i> Finalizar Pedido</h1>
+      <h1><i class="fas fa-shopping-cart"></i> Minha cesta</h1>
         @if ($errors->any())
           <div class="alert alert-danger alert-dismissible fade show">
               <ul>
@@ -52,7 +52,7 @@
 
       <hr>
 
-      Local de Retirada: {{$destino}}
+      Local de Retirada: {{$destino}} <small class="text-secondary font-italic">(Para mudar o local de retirada, vá até o <a class="text-underline" href="{{ route('home') }}"><u>Início</u></a> e mude na caixa de seleção)</small>
       <h4><b>Total:</b>&nbsp;R$ {{$total}}</h4>
       <form action="/solicitarPedido" method="POST">
         @csrf

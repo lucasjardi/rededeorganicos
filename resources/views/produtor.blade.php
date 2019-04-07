@@ -33,42 +33,6 @@
   <form method="POST" action="{{ url('/produto_produzido') }}">
     @csrf
 
-    {{-- @foreach($produtos->chunk(4) as $products)
-      <div class="row">
-        @foreach($products as $produto)
-        <div class="col-md-3">
-            <card inline-template>
-              <div class="card">
-                  <label for="{{$produto->codigo}}">
-                  <img class="card-img-top" src="{{asset('img/sample.jpg')}}" alt="Card image cap">
-                  <div class="card-body">
-                    <h5 class="card-title">{{$produto->nome}}</h5>
-                    <p class="card-text">{{$produto->descricao}}</p>
-                    <p class="card-text">
-                      <label>Forma Vendida: </label>
-                      <select name="unidades[{{$produto->codigo}}]" class="custom-select" {{ $produto->codUnidade !== 1 ? "readonly tabindex=-1 aria-disabled=true" : ""}}>
-                        @foreach ($unidades as $unidade)
-                          <option value="{{$unidade->codigo}}" {{ $unidade->codigo == $produto->codUnidade ? "selected" : ""}}>
-                            {{ $unidade->descricao }}
-                          </option>
-                        @endforeach
-                      </select>
-                      <label>Preço: (R$)</label>
-                      <input type="text" class="form-control" name="valor[{{$produto->codigo}}]"
-                      value="{{$produto->valor}}" placeholder="0,00">
-                    </p>
-                    <input id="{{$produto->codigo}}" type="checkbox" name="produtos[{{$produto->codigo}}]" class="form-control" style="text-align: center;">
-                  </div>
-                  </label>
-              </div>
-            </card>
-        </div>
-        @endforeach
-      </div>
-      <br>
-    @endforeach --}}
-
-
     @isset ($produtos)
     <div class="accordion" id="accordionExample">
         @forelse ($produtos as $produto)
@@ -127,18 +91,13 @@
           </div>
         </card>
         @empty
-          <h5>Não há produtos...</h5>
+        <div class="alert alert-warning" role="alert">
+          Você ainda não escolheu produtos.
+          <a href="{{ route('produtos') }}">Clique aqui para escolher!</a>
+        </div>
         @endforelse   
       </div>
     @endisset
-
-    {{-- @if(Session::has('hasSelected'))
-    <ul>
-      @foreach ($produtos as $produto)
-        <li>{{$produto->nome}}</li>
-      @endforeach
-    </ul>
-    @endif --}}
 
     {{-- botao Pronto --}}
     <div class="card shadow-lg float-button">

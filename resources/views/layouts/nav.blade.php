@@ -6,7 +6,7 @@
 
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
-	      <li class="nav-item {{ Request::is('home') || Request::is('/') ? 'active' : '' }}">
+	      <li class="nav-item {{ Request::is('home') || Request::is('/') || Request::is('retirar*') ? 'active' : '' }}">
 	        <a class="nav-link" href="{{route('home')}}">Início</a>
 	      </li>
 	      @guest <!-- Visitantes -->
@@ -32,7 +32,7 @@
 			      	<a class="nav-link" href="{{ route('cesta') }}"><i class="fas fa-shopping-basket"></i> Cesta <span class="bg-white p-1 rounded text-dark font-weight-bold">@{{count}}</span></a>
 			      </li>
 		      	</menucesta>
-		      <li class="nav-item">
+		      <li class="nav-item {{ Request::is('user/pedidos') ? 'active' : '' }}">
 		      	<a class="nav-link" href="{{ route('user.pedidos') }}">Pedidos</a>
 		      </li>
 		      @endif
