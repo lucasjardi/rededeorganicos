@@ -54,7 +54,10 @@
 			          <a class="dropdown-item" href="{{ route('manutencao.solicitacoes') }}">Solicitações</a>
 			          <a class="dropdown-item" href="{{ route('manutencao.produtos') }}">Produtos</a>
 			          <a class="dropdown-item" href="{{ route('manutencao.pedidos') }}">Pedidos</a>
-			          <a class="dropdown-item" href="{{ route('manutencao.locais') }}">Locais de Entrega</a>
+								<a class="dropdown-item" href="{{ route('manutencao.locais') }}">Locais de Entrega</a>
+								<a class="dropdown-item" href="{{ route('manutencao.descontos') }}">Descontos</a>
+								<a class="dropdown-item" href="{{ route('manutencao.horariosacessocliente') }}">Horários de Acesso - Cliente</a>
+								<a class="dropdown-item" href="{{ route('manutencao.horariosacessoprodutor') }}">Horários de Acesso - Produtor</a>
 			          @if(Auth::user()->codNivel < 3) <!-- Super Usuarios -->
 			          <a class="dropdown-item disabled" href="#">Usuários</a>
 			          @endif

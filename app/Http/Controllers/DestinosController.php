@@ -54,7 +54,7 @@ class DestinosController extends Controller
 
     // acrescimo de local
 
-    public function acrescimoLocalRetirada(Request $request)
+    public function setLocalRetirada(Request $request)
     {
         if(Auth::user()->codNivel == 5) {
             $produtos = DB::table('produto')
@@ -67,7 +67,7 @@ class DestinosController extends Controller
 
             $destino = Destino::find($request->destino);
             $destinoNome = $destino->descricao;
-            $request->session()->put('localSelected',$destinoNome);
+            $request->session()->put('localSelected',$request->destino);
 
             return view('cliente')->with(['produtos' => $produtos, 'destino' => $destinoNome]);
         }

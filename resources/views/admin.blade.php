@@ -37,17 +37,29 @@
 					       	<b>Endereço:</b> {{$pedido->cliente->endereco}}
 				       	</p>
 				       	--------------------------------
-				       	<p><b>Destino:</b> {{$pedido->destino->descricao}}</p>
+								 <p><b>Destino:</b> {{$pedido->destino->descricao}}</p>
 
-				       	{!! Form::open(['method' => 'PATCH', 'url' => 'pedidos/'.$pedido->codigo, 'style' => 'display: inline']) !!}
-				       		<input type="hidden" name="status" value="3">
-	                    	<button class="btn btn-success" type="submit">Confirmar</button>
-	                    {!! Form::close() !!}
-				       	{!! Form::open(['method' => 'PATCH', 'url' => 'pedidos/'.$pedido->codigo, 'style' => 'display: inline']) !!}
-				       		<input type="hidden" name="status" value="4">
-	                    	<button class="btn btn-danger" type="submit">Cancelar</button>
-	                    {!! Form::close() !!}
-	                    <a href="{{ url('/manutencao/pedido/'.$pedido->codigo.'/editar') }}" class="btn btn-primary">Editar Pedido</a>
+				       	<div class="row no-gutters">
+									 <div class="col">
+											{!! Form::open(['method' => 'PATCH', 'url' => 'pedidos/'.$pedido->codigo, 'style' => 'display: inline']) !!}
+												<input type="hidden" name="fromHomePage" value="true">
+												<input type="hidden" name="status" value="3">
+												<button class="btn btn-success btn-block" type="submit">Confirmar</button>
+											{!! Form::close() !!}
+									 </div>
+
+									 <div class="col">
+											{!! Form::open(['method' => 'PATCH', 'url' => 'pedidos/'.$pedido->codigo, 'style' => 'display: inline']) !!}
+												<input type="hidden" name="fromHomePage" value="true">
+												<input type="hidden" name="status" value="4">
+												<button class="btn btn-danger btn-block" type="submit">Cancelar</button>
+											{!! Form::close() !!}
+									 </div>
+
+									 <div class="col">
+										<a href="{{ url('/manutencao/pedido/'.$pedido->codigo.'/editar') }}" class="btn btn-primary btn-block">Editar Pedido</a>
+									 </div>
+								 </div>
 				      </div>
 				    </div>
 			 	</div>

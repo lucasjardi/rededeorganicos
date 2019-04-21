@@ -6,14 +6,14 @@
     <h1>Produtos Disponíveis</h1>
     <p class="font-italic">Escolha um local de retirada e clique em <b>Aplicar</b></p>
     @if(Session::has('localSelected'))
-    <div class="alert alert-success">
+    <div class="alert alert-info">
       <div class="row">
         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-8">
-            Você já selecionou o local de entrega: <b>{{Session::get('localSelected')}}</b>
+            Você já selecionou o local de entrega: <b>{{$destino}}</b>
         </div>
         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-8 text-right">
             <span>
-                <a href="" onclick="event.preventDefault();confirmSelectLocalAgain()" style="color: #155724">
+                <a href="{{ url('selectItensAgain') }}" style="color: #155724">
                   <u>Selecionar Outro</u></a>
               </span>
         </div>
@@ -29,6 +29,13 @@
         </select>
         <button id="btnlocalretirada" class="btn btn-primary">Aplicar</button>
     </form>
+    @endif
+    @if(isset($descontos) && count($descontos) > 0)
+    <div class="alert alert-info mt-3">
+        @foreach ($descontos as $desconto)
+          DESCONTO DE <b>{{$desconto->porcentagem}}%</b> PARA RETIRADAS EM <b>{{strtoupper($desconto->destino->descricao)}}</b><br>
+        @endforeach
+    </div>
     @endif
   </div>
 
@@ -53,12 +60,12 @@
                   {{-- Acréscimo para Local de Entrega: R$ {{$produto->acrescimo}} <br> --}}
                   <b>Total: R$ {{$produto->valor}}</b>
                 </p>
-                <input class="qtdProd" type="number" v-model="quantidade" style="width: 100px;" placeholder="Quantidade" min="1" {{$produto->unidade == "Kg" ? "step=0.1" : ""}} />
+                <input class="qtdProd" type="number" v-model="quantidade" style="width: 100px;" placeholder="Quantidade" min="0" {{$produto->unidade == "Kg" ? "step=0.1" : ""}} />
                 <button id="addNaCesta" 
                         @click="adicionarNaCesta({{$produto->codigo}},{{$produto->valor}})" 
                         class="btn btn-primary btn-sm" style="margin-top: -5px"
                         :disabled="btnDisabled">
-                  adicionar na cesta
+                        <i class="fas fa-shopping-basket"></i> ADICIONAR NA CESTA
                 </button>
               </div>
             </div>

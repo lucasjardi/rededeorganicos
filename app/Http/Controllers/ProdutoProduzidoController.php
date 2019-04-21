@@ -65,13 +65,13 @@ class ProdutoProduzidoController extends Controller
                             'codProdutor' => $user_id,
                             'codProduto' => $produto_id,
                             'codUnidade' => $unidade,
-                            'valor' => $valores[$produto_id]
+                            'valor' => str_replace(",",".",$valores[$produto_id])
                         ]);
                     } else {
                         ProdutoProduzido::where('codProdutor', $user_id)
                                         ->where('codProduto', $produto_id)
                                         ->update(['codUnidade' => $unidade,
-                                                  'valor' => $valores[$produto_id]]);
+                                                  'valor' => str_replace(",",".",$valores[$produto_id])]);
                     }
 
                     // inserir ou atualizar valor da ultima semana
@@ -83,12 +83,12 @@ class ProdutoProduzidoController extends Controller
                         ValorUltimaSemana::create([
                             'codProdutor' => $user_id,
                             'codProduto' => $produto_id,
-                            'valor' => $valores[$produto_id]
+                            'valor' => str_replace(",",".",$valores[$produto_id])
                         ]);
                     } else {
                         ValorUltimaSemana::where('codProdutor', $user_id)
                                         ->where('codProduto', $produto_id)
-                                        ->update(['valor' => $valores[$produto_id]]);
+                                        ->update(['valor' => str_replace(",",".",$valores[$produto_id])]);
                     }
                 }
                 
@@ -160,12 +160,20 @@ class ProdutoProduzidoController extends Controller
             \Session::forget('hasSelected');
         }
         if(\Session::has('localSelected')){
-            $cestaUser = Cesta::where('user_id',$request->user()->id)->get();
-            foreach ($cestaUser as $cesta) {
-                $cesta->delete();
-            }
+            // $cestaUser = Cesta::where('user_id',$request->user()->id)->get();
+            // foreach ($cestaUser as $cesta) {
+            //     $cesta->delete();
+            // }
             \Session::forget('localSelected');
         }
         return \Redirect::to('home');
+    }
+
+    public function str_replace( $search , $replace , $str ) {
+        if( ( $pos = strrpos( $str , $search ) ) !== false ) {
+            $search_length  = strlen( $search );
+            $str    = substr_replace( $str , $replace , $pos , $search_length );
+        }
+        return $str;
     }
 }

@@ -1,10 +1,10 @@
 <?php
-// use Illuminate\Support\Facades\Storage;
+
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->middleware('auth');
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
-Route::get('/retirar', 'DestinosController@acrescimoLocalRetirada')->middleware('auth','verificarhorarioacesso');
+Route::get('/retirar', 'DestinosController@setLocalRetirada')->middleware('auth','verificarhorarioacesso');
 Route::post('/solicitarPedido','PedidosController@store')->middleware('auth','verificarhorarioacesso');
 Route::get('/solicitado','PedidosController@solicitado')->middleware('auth','verificarhorarioacesso');
 Route::post('/produto_produzido','ProdutoProduzidoController@store')->middleware('auth','verificarhorarioacesso');
@@ -38,12 +38,23 @@ Route::prefix('manutencao')->middleware('auth','isadmin')->group(function (){
     Route::get('/locais','ManutencaoController@locais')->name('manutencao.locais');
     Route::get('/local/novo','ManutencaoController@novoLocal')->name('manutencao.novo.local');
     Route::get('/local/{destino}/editar','ManutencaoController@editLocal');
+    Route::get('/descontos','ManutencaoController@descontos')->name('manutencao.descontos');
+    Route::get('/desconto/novo','ManutencaoController@novoDesconto')->name('manutencao.novo.desconto');
+    Route::get('/desconto/{destino}/editar','ManutencaoController@editDesconto');
+    Route::get('horarios-de-acesso/cliente','ManutencaoController@horariosAcessoCliente')->name('manutencao.horariosacessocliente');
+    Route::get('horarios-de-acesso/produtor','ManutencaoController@horariosAcessoProdutor')->name('manutencao.horariosacessoprodutor');
 });
 
 Route::prefix('locais')->middleware('auth','isadmin')->group(function (){
-    Route::post('/salvar','DestinosController@store');
-    Route::patch('/{destino}','DestinosController@update');
-    Route::delete('/{destino}','DestinosController@destroy');
+    Route::post('/salvar','DescontosController@store');
+    Route::patch('/{destino}','DescontosController@update');
+    Route::delete('/{destino}','DescontosController@destroy');
+});
+
+Route::prefix('descontos')->middleware('auth','isadmin')->group(function (){
+    Route::post('/salvar','DescontosController@store');
+    Route::patch('/{destino}','DescontosController@update');
+    Route::delete('/{destino}','DescontosController@destroy');
 });
 
 
@@ -78,9 +89,11 @@ Route::prefix('user')->middleware('auth','verificarhorarioacesso')->group(functi
 });
 
 Route::post('/grupos','ManutencaoController@saveGroup');
-Route::get('/clientes','UsersController@getClientes');
 
-Route::get('forbidden', function()
-{
-   return view('forbidden');
-});
+Route::get('/clientesAutoComplete','UsersController@getClientes');
+Route::get('/produtosAutoComplete','ProdutosController@pesquisaPorNome');
+
+Route::view('forbidden','forbidden');
+
+Route::patch('horarioacessocliente','HorariosAcessoController@setHorarioAcessoCliente');
+Route::patch('horarioacessoprodutor','HorariosAcessoController@setHorarioAcessoProdutor');

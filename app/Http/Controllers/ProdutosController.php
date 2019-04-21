@@ -107,10 +107,37 @@ class ProdutosController extends Controller
 
     public function pesquisaPorNome(Request $request)
     {
-        $agent = new Agent();
+        $term = isset($_GET['term']) ? $_GET['term'] : $request->nome;
         $produtos = Produto::
-                    where( 'nome', 'LIKE', '%' . $request->nome . '%' )
+                    where( 'nome', 'LIKE', '%' . $term . '%' )
+                    ->where('ativo',1)
                     ->get();
-        return view('produtos')->with(['produtos' => $produtos, 'pesquisa' => $request->nome, 'isMobile' => $agent->isMobile()]);
+        if(isset($_GET['term'])) {
+            $produtosNome = array();
+            $prods = array();
+            foreach ($produtos as $produto) {
+                $produtosNome["id"] = $produto->codigo;
+                $produtosNome["value"] = $produto->nome;
+                array_push($prods, $produtosNome);
+            }
+
+            return $prods;
+        } else {
+            $agent = new Agent();
+            $produtos = DB::table("produto")->select('*')
+                ->where( 'nome', 'LIKE', '%' . $term . '%' )
+                ->whereNOTIn('codigo',function($query){
+                $query->select('codProduto')->from('produtor_produz');
+                })
+                ->where('ativo',1)
+                ->paginate(40);
+
+            return view('produtos')
+                    ->with([
+                            'produtos' => $produtos, 
+                            'pesquisa' => $request->nome, 
+                            'isMobile' => $agent->isMobile()
+                            ]);
+        }
     }
 }

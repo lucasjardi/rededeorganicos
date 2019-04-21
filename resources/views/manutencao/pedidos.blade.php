@@ -20,16 +20,26 @@
           <th scope="col">Cliente</th>
           <th scope="col">Data do Pedido</th>
           <th scope="col">Valor</th>
+          <th scope="col">Status</th>
           <th class="text-right">Ações</th>
         </thead>
 
         <tbody>
           @foreach ($pedidos as $pedido)
+          <script>console.log("{{$pedido->st->descricao}}")</script>
             <tr>
               <th scope="row">{{ $pedido->codigo }}</th>
               <td>{{ $pedido->usuario->name }}</td>
-              <td>{{ $pedido->dataPedido }}</td>
-              <td>{{ $pedido->valor }}</td>
+              <td>@datetime($pedido->dataPedido)</td>
+              <td>@dinheiro($pedido->valor)</td>
+              <td class="{{$pedido->status == 1 ? 'bg-analise' : 
+                          ($pedido->status == 2 ? 'bg-aguardando' : 
+                          ($pedido->status == 3 ? 'bg-confirmado' : 
+                          'bg-cancelado'))}}">
+                <span class="font-weight-bold text-uppercase">
+                  {{$pedido->st->descricao}}
+                </span>
+              </td>
               <td class="text-right">
                 <a href="{{ url('manutencao/pedido/' . $pedido->codigo . '/editar') }}">
                   <i class="fa fa-edit text-primary"></i>

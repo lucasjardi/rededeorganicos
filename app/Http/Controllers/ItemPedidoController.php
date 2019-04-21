@@ -13,10 +13,12 @@ class ItemPedidoController extends Controller
 
     public function save(Pedido $pedido, Request $request)
     {
+        $request->merge(['valorTotal' => str_replace(",",".",$request->valorTotal)]);
         $this->validate($request, [
-            "codProduto" => "required|numeric|gt:0",
-            "quantidade" => "required|numeric|gt:0",
-            "valorTotal" => "required|numeric|gt:0"
+            "codProduto" => "required|numeric",
+            "quantidade" => "required|numeric",
+            "valorTotal" => "required|numeric",
+            "unidade" => "different:-1"
         ]);
 
         $produto = Produto::find($request->codProduto);
@@ -26,7 +28,8 @@ class ItemPedidoController extends Controller
         ItemPedido::create($request->all() + ["codPedido" => $pedido->codigo, "descricao" => $descricao]);
 
         $pedido->update([
-            "valor" => $pedido->valor + ($request->valorTotal * $request->quantidade)
+            // "valor" => $pedido->valor + ($request->valorTotal * $request->quantidade)
+            "valor" => $pedido->valor + $request->valorTotal // ja tem que inserir o preco somado
         ]);
 
         return back();

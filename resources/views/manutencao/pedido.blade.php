@@ -34,11 +34,9 @@
         {!! Form::open(['url' => 'pedidos']) !!}
       @endif
 
-      @if ( Request::is('*/novo') )
-        <label for="nomeCliente">Cliente (Obrigatório) <small class="text-secondary">(Comece a digitar o nome do cliente para escolher)</small></label>
-        <input class="form-control" id="nomeCliente">
-        <input type="hidden" name="codCliente" id="codCliente" value="">
-      @endif
+      <label for="nomeCliente">Cliente (Obrigatório) <small class="text-secondary">(Comece a digitar o nome do cliente para escolher)</small></label>
+        <input class="form-control" id="nomeCliente" value="{{isset($pedido->usuario->name)?$pedido->usuario->name:''}}">
+      {!! Form::input('hidden','codCliente',null,['id' => 'codCliente']) !!}
       {!! Form::label('codDestino','Destino (Obrigatório)') !!}
       {{ Form::select('codDestino',$destinos,null, ['class' => 'form-control']) }}
       {!! Form::label('valor','Valor (R$) (Obrigatório)') !!}
@@ -63,14 +61,17 @@
         <div class="row">
             <div class="col">
               <div class="form-group">
-                <label>Produto (CÓDIGO): </label>
+                {{-- <label>Produto (CÓDIGO): </label>
                 <input class="form-control" list="produtosDataList" name="codProduto">
 
                 <datalist id="produtosDataList">
                   @foreach ($produtos as $produto)
                     <option value="{{$produto->codigo}}">{{$produto->nome}}</option>
                   @endforeach
-                </datalist>
+                </datalist> --}}
+                <label>Produto: </label>
+                <input class="form-control" id="nomeProduto">
+                <input type="hidden" name="codProduto" id="codProduto" value="">
               </div>
             </div>
             <div class="col">
@@ -83,9 +84,11 @@
               <div class="form-group">
                 <label>Unidade: </label>
                 <select class="form-control" name="unidade">
-                  <option></option>
+                  <option value="-1">Escolha uma unidade</option>
                   @foreach ($unidades as $unidade)
+                    @if($unidade->descricao != "Produtor Escolhe")
                     <option value="{{$unidade->descricao}}">{{$unidade->descricao}}</option>
+                    @endif
                   @endforeach
                 </select>
               </div>
@@ -93,7 +96,7 @@
             <div class="col">
               <div class="form-group">
                 <label>Valor Total (R$): </label>
-                <input class="form-control" type="text" name="valorTotal">
+                <input class="form-control" type="text" name="valorTotal" id="valorItemPedido">
               </div>
             </div>
 
@@ -120,7 +123,7 @@
                 <tr>
                   <td> {{ $item->codProduto }}</td>
                   <td>{{ $item->quantidade }}</td>
-                  <td>{{ $item->valorTotal }}</td>
+                  <td>@dinheiro($item->valorTotal)</td>
                   <td>{{ $item->descricao }}</td>
                   <td>
                       <a href="{{url('/itempedido/'.$item->codigo)}}"><i class="fa fa-times text-danger"></i></a>

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,6 +16,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+
+        Blade::directive('dinheiro', function ($expression) {
+            return "<?php echo number_format($expression, 2, ',', '.'); ?>";
+        });
+
+        Blade::directive('datetime', function ($expression) {
+            return "<?php echo ($expression)->format('d/m/Y H:i'); ?>";
+        });
     }
 
     /**

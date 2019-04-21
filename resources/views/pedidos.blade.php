@@ -16,10 +16,10 @@
 				      <h5 class="mb-0 d-inline">
 				        <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#pedido{{$pedido->codigo}}" aria-expanded="true" aria-controls="pedido{{$pedido->codigo}}">
 				          <i class="fas fa-shopping-basket"></i> 
-				          {{date('d/m/Y', strtotime($pedido->dataPedido))}} - Total de R$ {{$pedido->valor}}
+				          @datetime($pedido->dataPedido) - Total de R$ {{$pedido->valor}}
 				        </button>
 				      </h5>
-				      <span class="float-right text-secondary">
+				      <span class="float-right text-secondary bg-white p-1 font-weight-bold">
                            {{$pedido->st->descricao}}
 				        </span>
 				    </div>

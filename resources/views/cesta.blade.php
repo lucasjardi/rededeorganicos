@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="shadow-lg p-4 mb-5 bg-white rounded" style="padding: 50px">
-      <h1><i class="fas fa-shopping-cart"></i> Minha cesta</h1>
+      <h1><i class="fas fa-shopping-basket"></i> Minha cesta</h1>
         @if ($errors->any())
           <div class="alert alert-danger alert-dismissible fade show">
               <ul>
@@ -25,40 +25,47 @@
         <thead>
           <tr>
             <th scope="col">Descrição</th>
-            <th scope="col">SubTotal</th>
-            <th><a href="{{ url('/cesta/limpar') }}" class="btn btn-default btn-sm">Esvaziar Carrinho</a></th>
+            <th scope="col">Valor</th>
+            <th><a href="{{ url('/cesta/limpar') }}" class="btn btn-default btn-sm">Esvaziar Cesta</a></th>
           </tr>
         </thead>
         <tbody>
-          @php
-            $total = 0;
-          @endphp
           @foreach($cesta as $c)
           <tr>
             <th scope="row">{{$c->quantidade}} {{$c->unidade}} de {{$c->produto->nome}}</th>
-            <td>R$ {{$c->subtotal}}</td>
+            <td>R$ {{number_format($c->subtotal, 2, ',', '.')}}</td>
             <td>
               {!! Form::open(['method' => 'DELETE', 'url' => 'cesta/'.$c->id, 'style' => 'display: inline']) !!}
                 <button type="submit" class="btn btn-danger btn-sm">Remover</button>
               {!! Form::close() !!}
             </td>
           </tr>
-          @php
-            $total += $c->subtotal;
-          @endphp
           @endforeach
         </tbody>
       </table>
 
       <hr>
+      @if (!isset($destino))
+          <div class="alert alert-warning">
+            Você ainda não escolheu seu local de retirada. 
+            O pedido só poderá ser solicitado após a escolha do mesmo.
+            <a href="{{ route('home') }}" style="color:inherit"><b><u>Clique aqui para Escolher</u></b></a>
+          </div>
+      @endif
 
-      Local de Retirada: {{$destino}} <small class="text-secondary font-italic">(Para mudar o local de retirada, vá até o <a class="text-underline" href="{{ route('home') }}"><u>Início</u></a> e mude na caixa de seleção)</small>
-      <h4><b>Total:</b>&nbsp;R$ {{$total}}</h4>
+      @if(isset($destino) && count($cesta) > 0)
+      <b>Local de Retirada:</b> {{$destino->descricao}} <small class="text-secondary font-italic">(Para mudar o local de retirada, vá até o <a class="text-underline" href="{{ route('home') }}"><u>Início</u></a> e mude na caixa de seleção)</small><br>
+      <b>Subtotal:</b> R$ {{number_format($subtotal, 2, ',', '.')}} <br>
+      @if($desconto>0)<b>Desconto:</b> R$ {{number_format($desconto, 2, ',', '.')}}<br>@endif
+      <h4><b>Total:</b>&nbsp;R$ {{number_format($total, 2, ',', '.')}}</h4>
+
       <form action="/solicitarPedido" method="POST">
         @csrf
-        <input type="hidden" name="local_de_retirada" value="{{$destino}}">
+        <input type="hidden" name="local_de_retirada" value="{{$destino->codigo}}">
+        <input type="hidden" name="total" value="{{$total}}">
         <button class="btn btn-success" type="submit">Solicitar Pedido</button>
       </form>
+      @endif
 
     </div>
 </div>

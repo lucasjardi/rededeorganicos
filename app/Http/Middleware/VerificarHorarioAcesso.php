@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Auth;
 use App;
+use Illuminate\Support\Facades\DB;
 
 class VerificarHorarioAcesso
 {
@@ -17,53 +18,21 @@ class VerificarHorarioAcesso
      */
     public function handle($request, Closure $next)
     {
-        $now =  \Carbon\Carbon::now();
-        $diaDaSemana = $now->dayOfWeek;
-        //$podeEntrar = App::environment('local') ? true : false;
-	$podeEntrar = true;
-
-        if(!$podeEntrar) {
-            if (  $request->user()->codNivel == 5 ) { // Cliente
-                if ( $diaDaSemana == 0 || $diaDaSemana == 1 ) {
-           
-                    $ultimoDomingo = $now->copy();
-                    if( $diaDaSemana != 0 )
-                        $ultimoDomingo = \Carbon\Carbon::createFromTimeStamp(strtotime("last Sunday", $now->timestamp));
-                    $ultimoDomingo->hour = 12; $ultimoDomingo->minute = 0; $ultimoDomingo->second = 0;
-    
-                    $proximaSegunda = $now->copy();
-                    if( $diaDaSemana != 1 )
-                        $proximaSegunda = \Carbon\Carbon::createFromTimeStamp(strtotime("next Monday", $now->timestamp));
-                    $proximaSegunda->hour = 22; $proximaSegunda->minute = 0; $proximaSegunda->second = 0;
-    
-                    if( $now->between($ultimoDomingo,$proximaSegunda) ) {
-                       $podeEntrar = true;
-                    }
-    
-                }
-            } else if ( $request->user()->codNivel == 4 ) { // Produtor
-                if ( ($diaDaSemana >= 4 && $diaDaSemana <= 6) || $diaDaSemana == 0 ) {
-    
-                    $ultimaQuinta = $now->copy();
-                    if($diaDaSemana != 4)
-                        $ultimaQuinta = \Carbon\Carbon::createFromTimeStamp(strtotime("last Thursday", $now->timestamp));
-                    $ultimaQuinta->hour = 20;
-        
-                    $proximoDomingo =$now->copy();
-                    if($diaDaSemana != 0)
-                        $proximoDomingo = \Carbon\Carbon::createFromTimeStamp(strtotime("next Sunday", $now->timestamp));
-                    $proximoDomingo->hour = 12;
-        
-                    if( $now->between($ultimaQuinta,$proximoDomingo) ) {
-                        $podeEntrar = true;
-                    }
-                }
-            } else if ( $request->user()->codNivel < 3 ) {
-                $podeEntrar = true;
-            }
+        $podeEntrar = 1;
+        if( $request->user()->codNivel == 4 || $request->user()->codNivel == 5 ) {
+            $table = $request->user()->codNivel == 4 ? DB::table('horariosacessoprodutor') : DB::table('horariosacessocliente');
+            $sql = $table->select(DB::raw('CASE WHEN CURRENT_TIME BETWEEN 
+                                            horasInicio AND horasFim 
+                                            THEN TRUE
+                                            ELSE FALSE
+                                            END AS resultado'))
+                        ->where(DB::raw('DAYOFWEEK(NOW())'),'=',DB::raw('dia'))
+                        ->first();
+            
+            $podeEntrar = $sql->resultado;
         }
-
-        if(!$podeEntrar){
+        
+        if($podeEntrar === 0){
             Auth::logout();
             return redirect('forbidden');
         }

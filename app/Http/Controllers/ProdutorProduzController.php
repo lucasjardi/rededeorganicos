@@ -10,7 +10,7 @@ class ProdutorProduzController extends Controller
     
     public function store(Request $request)
     {
-    	if (ProdutorProduz::where('codProdutor', $request->produto_id)
+    	if (ProdutorProduz::where('codProdutor', $request->user()->id)
     					->where('codProduto', $request->produto_id)->count() == 0 ) {
     		ProdutorProduz::create([
 	    		'codProduto' => $request->produto_id,

@@ -4,19 +4,45 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Cesta;
 use App\Produto;
 use App\ProdutoProduzido;
 use App\Unidade;
+use App\Destino;
 
 class CestaController extends Controller
 {
 
     public function index()
     {
-    	$cestaUser = Cesta::where('user_id',Auth::user()->id)->with('produto')->get();
+        $cestaUser = Cesta::where('user_id',Auth::user()->id)
+                    ->with('produto')
+                    ->get();
+
+        $subtotal = $cestaUser->reduce(function ($carry, $item) {
+            return $carry + $item->subtotal;
+        });
+
+        $total = $subtotal;
+
         $destino = \Session::get('localSelected');
-    	return view('cesta')->with(["cesta" => $cestaUser, "destino" => $destino]);
+        $desconto = DB::table('descontos')
+                        ->where('destino_id', $destino)
+                        ->pluck('porcentagem')
+                        ->first();
+
+        $descontado = 0;
+        if(!empty($desconto) || !$desconto==null){
+            $descontado = $total *  ($desconto/100);
+            $total = $total - $descontado;
+        }
+
+        return view('cesta')->with(["cesta" => $cestaUser, 
+                                    "destino" => Destino::find($destino),
+                                    "subtotal" => $subtotal,
+                                    "total" => $total,
+                                    "desconto" => $descontado]);
     }
 
     public function adicionaNaCesta(Request $request)

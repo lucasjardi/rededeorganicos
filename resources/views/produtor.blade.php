@@ -9,13 +9,6 @@
     Após ter selecionado tudo, clique no botão <b class="text-success">PRONTO</b></p>
   </div>
 
-  @if(Session::has('hasSelected'))
-    <div class="alert alert-success">
-      {{ Session::get('hasSelected') }}
-      {{-- <span class="float-right"><a href="{{ url('selectItensAgain') }}" style="color: #155724"><u>Limpar Seleções</u></a></span> --}}
-    </div>
-  @endif
-
 @if ($errors->any())
     <div class="alert alert-danger alert-dismissible fade show">
         <ul>
@@ -30,7 +23,7 @@
 @endif
 
 
-  <form method="POST" action="{{ url('/produto_produzido') }}">
+  <form id="produtorForm" method="POST" action="{{ url('/produto_produzido') }}">
     @csrf
 
     @isset ($produtos)
@@ -42,7 +35,7 @@
             class="card-header {{array_key_exists($produto->codigo,$prodsjaselecionados) ? 'bg-light' : 'bg-white'}}" 
             id="headingOne">
               <span style="padding-left: 30px"></span>
-            <input onchange="mudaEstiloCardCheckbox(this)" id="{{$produto->codigo}}" type="checkbox" name="produtos[{{$produto->codigo}}]" class="form-check-input" style="margin-top: 13px;" :checked="{{array_key_exists($produto->codigo,$prodsjaselecionados) ? 'true' : 'false'}}">
+            <input onchange="mudaEstiloCardCheckbox(this)" id="{{$produto->codigo}}" type="checkbox" name="produtos[{{$produto->codigo}}]" class="form-check-input checkboxGrandinha" style="margin-top: 13px;" :checked="{{array_key_exists($produto->codigo,$prodsjaselecionados) ? 'true' : 'false'}}">
               <h5 class="mb-0 d-inline">
                 <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#produto{{$produto->codigo}}" aria-expanded="true" aria-controls="produto{{$produto->codigo}}">
                   {{-- <span style="padding-left: 50px"></span> --}}
@@ -76,7 +69,7 @@
                 <div class="row">
                   <div class="col-md-4">
                     <label>Preço: (R$)</label>
-                    <input type="text" class="form-control" name="valor[{{$produto->codigo}}]"
+                    <input id="valor" type="text" class="form-control" name="valor[{{$produto->codigo}}]"
                     value="{{$produto->valor}}" placeholder="0,00">
                   </div>
                 </div>
@@ -99,11 +92,9 @@
       </div>
     @endisset
 
-    {{-- botao Pronto --}}
     <div class="card shadow-lg float-button">
       <button type="submit" class="btn btn-success"><i class="fas fa-check-circle"></i> Pronto</button>
     </div>
-    {{-- fim botao pronto --}}
 
   </form>
 </div>

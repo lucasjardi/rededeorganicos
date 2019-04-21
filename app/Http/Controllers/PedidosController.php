@@ -82,17 +82,12 @@ class PedidosController extends Controller
         $this->validate($request, [
             'local_de_retirada' => 'required'
         ]);
-
-
-        $valor = Cesta::where('user_id',$request->user()->id)->sum('subtotal');
-
-        $destinoId = Destino::where('descricao', $request->local_de_retirada)->first();
         
         $pedido = new Pedido([
             'codCliente' => $request->user()->id,
-            'codDestino' => $destinoId->codigo,
+            'codDestino' => $request->local_de_retirada,
             'dataPedido' => Carbon::now(),
-            'valor' => $valor
+            'valor' => $request->total
         ]);
 
         if($pedido->save()){ // se salvou o pedido, salva os itens do pedido
@@ -152,12 +147,14 @@ class PedidosController extends Controller
      */
     public function update(Request $request, Pedido $pedido)
     {
-        $this->validate($request, [
-            'valor' => 'required',
-            'codCliente' => 'required'
-        ]);
+        if (!$request->has('fromHomePage')) {
+            $this->validate($request, [
+                'valor' => 'required',
+                'codCliente' => 'required'
+            ]);
+            $request->merge(['valor' => str_replace(",",".",$request->valor)]);
+        }
         $enviarEmailConfirmado = $pedido->status != 3 && $request->status == 3;
-        $request->merge(['valor' => str_replace(",",".",$request->valor)]);
         $pedido->update($request->all());
 
         if( $enviarEmailConfirmado ) {

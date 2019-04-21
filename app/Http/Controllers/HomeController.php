@@ -12,6 +12,7 @@ use App\Destino;
 use App\Cliente;
 use App\Produtor;
 use App\ProdutoProduzido;
+use App\Desconto;
 
 class HomeController extends Controller
 {
@@ -63,7 +64,7 @@ class HomeController extends Controller
         else if( $nivel == 5 ) { // cliente
                
             if (\Session::has('localSelected')) {
-                $destino = Destino::where('descricao',\Session::get('localSelected'))->first();
+                $destino = Destino::where('codigo',\Session::get('localSelected'))->first();
                 return \Redirect::to('/retirar?destino='.$destino->codigo);
             }
 
@@ -76,8 +77,14 @@ class HomeController extends Controller
                 $preencherInformacoes = true;
 
             $locaisDeRetirada = Destino::all();
+            
 
-            return view('cliente')->with(['locaisDeRetirada' => $locaisDeRetirada, 'preencher' => $preencherInformacoes]);
+            return view('cliente')
+                    ->with([
+                        'locaisDeRetirada' => $locaisDeRetirada, 
+                        'preencher' => $preencherInformacoes,
+                        'descontos' => Desconto::with('destino')->get()
+                        ]);
         }
     }
 

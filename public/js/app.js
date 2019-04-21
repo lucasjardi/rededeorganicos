@@ -1,16 +1,26 @@
 $(function () {
-	$('#produtos').DataTable();
+	if($('.alert-success').length){
+		swal({title: "Salvo!",icon: "success"});
+	}
+	$('#produtos').DataTable({"order": []});
 	$('[data-toggle="tooltip"]').tooltip();
 	$('#exampleModal').modal('show');
 
 	$('#valor').mask('#.##0,00', {reverse: true});
+	$('#valorItemPedido').mask('#.##0,00', {reverse: true});
 	$('#acrescimo').mask('#.##0,00', {reverse: true});
 
 	$("#nomeCliente" ).autocomplete({
-		source: "/clientes",
+		source: "/clientesAutoComplete",
 		select: function( event, ui ) {
-			// console.log("Selected: " + ui.item.id);
 			$("#codCliente").val(ui.item.id);
+		}
+	});
+
+	$("#nomeProduto" ).autocomplete({
+		source: "/produtosAutoComplete",
+		select: function( event, ui ) {
+			$("#codProduto").val(ui.item.id);
 		}
 	});
 
