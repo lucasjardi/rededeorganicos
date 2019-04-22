@@ -45,10 +45,10 @@
               <td>{{$desconto->porcentagem}}</td>
               <td>{{ $desconto->descricao }}</td>
               <td class="text-right">
-                <a href="{{ url('manutencao/desconto/' . $desconto->codigo . '/editar') }}">
+                <a href="{{ url('manutencao/desconto/' . $desconto->id . '/editar') }}">
                   <i class="fa fa-edit text-primary"></i>
                 </a>&nbsp;
-                 {!! Form::open(['method' => 'DELETE', 'url' => 'descontos/'.$desconto->codigo, 'style' => 'display: inline']) !!}
+                 {!! Form::open(['method' => 'DELETE', 'url' => 'descontos/'.$desconto->id, 'style' => 'display: inline']) !!}
                 <button type="submit" style="border: none; background: none;cursor: pointer;"><i class="fa fa-times text-danger"></i></button>
                 {!! Form::close() !!}
               </td>

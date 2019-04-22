@@ -30,7 +30,7 @@
 
 
       @if( Request::is('*/editar'))
-        {{ Form::model($desconto, ['method' => 'PATCH', 'url' => 'descontos/' . $desconto->codigo]) }}
+        {{ Form::model($desconto, ['method' => 'PATCH', 'url' => 'descontos/' . $desconto->id]) }}
       @else
         {!! Form::open(['url' => 'descontos/salvar']) !!}
       @endif

@@ -40,7 +40,7 @@ Route::prefix('manutencao')->middleware('auth','isadmin')->group(function (){
     Route::get('/local/{destino}/editar','ManutencaoController@editLocal');
     Route::get('/descontos','ManutencaoController@descontos')->name('manutencao.descontos');
     Route::get('/desconto/novo','ManutencaoController@novoDesconto')->name('manutencao.novo.desconto');
-    Route::get('/desconto/{destino}/editar','ManutencaoController@editDesconto');
+    Route::get('/desconto/{desconto}/editar','ManutencaoController@editDesconto');
     Route::get('horarios-de-acesso/cliente','ManutencaoController@horariosAcessoCliente')->name('manutencao.horariosacessocliente');
     Route::get('horarios-de-acesso/produtor','ManutencaoController@horariosAcessoProdutor')->name('manutencao.horariosacessoprodutor');
 });
@@ -53,8 +53,8 @@ Route::prefix('locais')->middleware('auth','isadmin')->group(function (){
 
 Route::prefix('descontos')->middleware('auth','isadmin')->group(function (){
     Route::post('/salvar','DescontosController@store');
-    Route::patch('/{destino}','DescontosController@update');
-    Route::delete('/{destino}','DescontosController@destroy');
+    Route::patch('/{desconto}','DescontosController@update');
+    Route::delete('/{desconto}','DescontosController@destroy');
 });
 
 
