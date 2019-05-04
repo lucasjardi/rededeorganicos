@@ -26,21 +26,19 @@
       @endif
 
 
-      <a href="{{ route('manutencao.descontos') }}">« Voltar</a>
+      <a href="{{ route('manutencao.locais') }}">« Voltar</a>
 
 
       @if( Request::is('*/editar'))
-        {{ Form::model($desconto, ['method' => 'PATCH', 'url' => 'descontos/' . $desconto->codigo]) }}
+        {{ Form::model($destino, ['method' => 'PATCH', 'url' => 'destinos/' . $destino->codigo]) }}
       @else
-        {!! Form::open(['url' => 'descontos/salvar']) !!}
+        {!! Form::open(['url' => 'destinos']) !!}
       @endif
 
-      {!! Form::label('destino_id','Destino (Obrigatório)') !!}
-      {{ Form::select('destino_id',$destinos,null, ['class' => 'form-control']) }}
-      {!! Form::label('porcentagem','Porcentagem % (Obrigatório)') !!}
-      {!! Form::input('number','porcentagem',null, ['class' => 'form-control', 'placeholder' => '10']) !!}
-      {!! Form::label('descricao','Descrição do Desconto (Opcional)') !!}
-      {!! Form::input('text','descricao',null, ['class' => 'form-control', 'placeholder' => 'Nome do desconto']) !!}
+      {!! Form::label('descricao','Descrição (Obrigatório)') !!}
+      {!! Form::input('text','descricao',null, ['class' => 'form-control', 'placeholder' => 'Nome do Local']) !!}
+      {!! Form::label('acrescimo','Acréscimo') !!}
+      {!! Form::input('text','acrescimo',null, ['class' => 'form-control', 'placeholder' => '0.00']) !!}
       
       {!! "<br><br>" !!}
       {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}

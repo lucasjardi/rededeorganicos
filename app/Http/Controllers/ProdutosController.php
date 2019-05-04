@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Produto;
+use App\Unidade;
+use App\Grupo;
+use App\ProdutorProduz;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Jenssegers\Agent\Agent;
@@ -12,32 +15,49 @@ use Auth;
 class ProdutosController extends Controller
 {
 
-    public function get()
+    private $agent;
+    public function __construct()
     {
-    	// $produtos = Produto::with('unidade')->paginate(10);
-        $produtos = null;
-        $aviso = false;
-
-        $agent = new Agent();
-        
-    	if (Auth::user()->codNivel == 4) {
-            $produtos = DB::table("produto")->select('*')
-            ->whereNOTIn('codigo',function($query){
-               $query->select('codProduto')->from('produtor_produz');
-            })
-            ->where('ativo',1)
-            ->paginate(40);
-
-            $countProdutorProduz = DB::table('produtor_produz')
-            ->where('codProdutor',Auth::user()->id)
-            ->count();
-            $aviso = $countProdutorProduz == 0 ? true : false;
-        } else {
-            $produtos = Produto::where('ativo',1)->paginate(40);
-        }
-    	return view('produtos')->with(['produtos' => $produtos, 'init' => true, 'aviso' => $aviso, 'isMobile' => $agent->isMobile()]);
+        $this->middleware(['auth','isadmin'],['except' => ['index']]);
+        $this->agent = new Agent();
     }
 
+    public function index(Request $request, $ativo = 1)
+    {
+        $produtos = Produto::with('unidade','grupo')->where('ativo',$ativo)
+        ->when(Auth::user()->codNivel==4, function ($query){
+            $query->whereNOTIn('codigo',function($query){
+                $query->select('codProduto')->from('produtor_produz');
+            });
+        });
+
+        $countProdutorProduz = ProdutorProduz::where('codProdutor',Auth::user()->id)->count();
+
+        $isManutencao = $request->is('manutencao/*');
+        $view = $isManutencao ? 'manutencao.produtos.index' : 'produtos';
+
+    	return view($view,[
+            'produtos' => $isManutencao?$produtos->get():$produtos->paginate(40), 
+            'init' => true, 
+            'aviso' => $countProdutorProduz == 0 ? true : false, 
+            'isMobile' => $this->agent->isMobile()
+        ]);
+    }
+
+    public function create($produto = null)
+    {
+        return view('manutencao.produtos.form',[
+            'produto' => $produto,
+            'unidades' => Unidade::allAsArray(), 
+            'grupos' => Grupo::allAsArray(), 
+            'isMobile' => $this->agent->isMobile()
+        ]);
+    }
+
+    public function edit(Produto $produto)
+    {
+        return $this->create($produto);
+    }
 
     public function store(Request $request)
     {
@@ -83,6 +103,11 @@ class ProdutosController extends Controller
         return back();
     }
 
+    public function produtosdesativados(Request $request)
+    {
+        return $this->index( $request, 0 );
+    }
+
     public function desativarProduto(Produto $produto)
     {
         $produto->ativo = 0;
@@ -123,7 +148,6 @@ class ProdutosController extends Controller
 
             return $prods;
         } else {
-            $agent = new Agent();
             $produtos = DB::table("produto")->select('*')
                 ->where( 'nome', 'LIKE', '%' . $term . '%' )
                 ->whereNOTIn('codigo',function($query){
@@ -136,7 +160,7 @@ class ProdutosController extends Controller
                     ->with([
                             'produtos' => $produtos, 
                             'pesquisa' => $request->nome, 
-                            'isMobile' => $agent->isMobile()
+                            'isMobile' => $this->agent->isMobile()
                             ]);
         }
     }

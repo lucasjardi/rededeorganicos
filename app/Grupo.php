@@ -16,4 +16,15 @@ class Grupo extends Model
     	'descricao'
     ];
 
+    public static function allAsArray()
+    {
+        $grupos = self::all();
+        $gruposNome = array();
+        foreach ($grupos as $grupo){
+            $gruposNome[ $grupo->codigo ] = $grupo->descricao;
+        }
+
+        return $gruposNome;
+    }
+
 }

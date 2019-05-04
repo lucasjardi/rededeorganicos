@@ -84,7 +84,7 @@
               <div class="form-group">
                 <label>Unidade: </label>
                 <select class="form-control" name="unidade">
-                  <option value="-1">Escolha uma unidade</option>
+                  <option></option>
                   @foreach ($unidades as $unidade)
                     @if($unidade->descricao != "Produtor Escolhe")
                     <option value="{{$unidade->descricao}}">{{$unidade->descricao}}</option>
@@ -102,7 +102,7 @@
 
             <div class="col">
               <div class="form-group">
-                <button class="btn btn-primary form-control" style="margin-top: 20px !important">Adicionar</button>
+                <button type="submit" class="btn btn-primary form-control" style="margin-top: 20px !important">Adicionar</button>
               </div>
             </div>
           </div>
