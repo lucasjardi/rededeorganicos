@@ -44,7 +44,7 @@
                 <a href="{{ url('manutencao/pedido/' . $pedido->codigo . '/editar') }}">
                   <i class="fa fa-edit text-primary"></i>
                 </a>&nbsp;
-                 {!! Form::open(['method' => 'DELETE', 'url' => 'pedidos/'.$pedido->codigo.'/remover', 'style' => 'display: inline']) !!}
+                 {!! Form::open(['method' => 'DELETE', 'url' => 'pedidos/'.$pedido->codigo, 'style' => 'display: inline']) !!}
                 <button type="submit" style="border: none; background: none;cursor: pointer;"><i class="fa fa-times text-danger"></i></button>
                 {!! Form::close() !!}
               </td>

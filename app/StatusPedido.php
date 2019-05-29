@@ -16,4 +16,14 @@ class StatusPedido extends Model
     	'codigo',
     	'descricao'
     ];
+
+    public static function allAsArray()
+    {
+        $statuses = self::all();
+        $statusesNome = array();
+        foreach ($statuses as $status){
+            $statusesNome[ $status->codigo ] = $status->descricao;
+        }
+        return $statusesNome;
+    }
 }

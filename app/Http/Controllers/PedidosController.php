@@ -13,10 +13,19 @@ use App\ItemPedido;
 use App\Unidade;
 use App\Produto;
 use App\Destino;
+use App\StatusPedido;
 use Auth;
+use Jenssegers\Agent\Agent;
 
 class PedidosController extends Controller
 {
+
+    private $agent;
+    public function __construct()
+    {
+        $this->middleware(['auth','isadmin']);
+        $this->agent = new Agent();
+    }
     
     /**
      * Display a listing of the resource.
@@ -25,7 +34,8 @@ class PedidosController extends Controller
      */
     public function index()
     {
-        //
+        $pedidos = Pedido::with('usuario','destino','st')->orderBy('dataPedido',false)->get();
+    	return view('manutencao.pedidos.index')->with(['pedidos' => $pedidos, 'isMobile' => $this->agent->isMobile()]);
     }
 
     /**
@@ -33,9 +43,19 @@ class PedidosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($pedido=null)
     {
-        //
+        // $ped = Pedido::with('itens','usuario')->find($pedido->codigo);
+        if(!!$pedido) $pedido->load('itens','usuario');
+
+        return view('manutencao.pedidos.form',[
+            'pedido' => $pedido, 
+            'destinos' => Destino::allAsArray(), 
+            'statuses' => StatusPedido::allAsArray(), 
+            'produtos' => Produto::all(), 
+            'unidades' => Unidade::all(), 
+            'isMobile' => $this->agent->isMobile()
+        ]);
     }
 
     /**
@@ -45,7 +65,7 @@ class PedidosController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function save(Request $request)
+    public function store(Request $request)
     {
         $request->merge(['valor' => str_replace(",",".",$request->valor)]);
         $this->validate($request, [
@@ -77,45 +97,6 @@ class PedidosController extends Controller
         return redirect('manutencao/pedido/'.$pedido->codigo.'/editar');
     }
 
-    public function store(Request $request)
-    {
-        $this->validate($request, [
-            'local_de_retirada' => 'required'
-        ]);
-        
-        $pedido = new Pedido([
-            'codCliente' => $request->user()->id,
-            'codDestino' => $request->local_de_retirada,
-            'dataPedido' => Carbon::now(),
-            'valor' => $request->total
-        ]);
-
-        if($pedido->save()){ // se salvou o pedido, salva os itens do pedido
-            $cestaUser = Cesta::where('user_id',$request->user()->id)->get();
-            foreach ($cestaUser as $cesta) {
-                $descricao = $cesta->quantidade." ". $cesta->unidade ." de ". $cesta->produto->nome;
-                ItemPedido::create([
-                    'codPedido' => $pedido->codigo,
-                    'codProduto' => $cesta->produto->codigo,
-                    'quantidade' => $cesta->quantidade,
-                    'valorTotal' => $cesta->subtotal,
-                    'descricao' => $descricao
-                ]);
-            }
-
-            foreach ($cestaUser as $cesta) {
-                $cesta->delete();
-            }
-
-            return \Redirect::to('/solicitado')
-            ->with('message','Seu Pedido foi Solicitado! Você será contatado(a) 
-                                        quando estiver pronto para buscá-lo!');
-            // return ["message" => "inserted"];
-        }
-
-        return \Redirect::to('/solicitado')->with('message','Não Foi Possível Fazer o Pedido. Tente Novamente...');
-    }
-
     /**
      * Display the specified resource.
      *
@@ -135,7 +116,7 @@ class PedidosController extends Controller
      */
     public function edit(Pedido $pedido)
     {
-        //
+        return $this->create($pedido);
     }
 
     /**
@@ -197,12 +178,5 @@ class PedidosController extends Controller
         \Session::flash('mensagem_sucesso', 'Pedido deletado com sucesso!');
 
         return back();
-    }
-
-
-
-    public function solicitado()
-    {
-       return view('solicitado');
     }
 }

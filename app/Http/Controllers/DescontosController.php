@@ -4,9 +4,44 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Desconto;
+use App\Destino;
+use Jenssegers\Agent\Agent;
 
 class DescontosController extends Controller
 {
+    private $agent;
+    public function __construct()
+    {
+        $this->middleware(['auth','isadmin']);
+        $this->agent = new Agent();
+    }
+
+    public function index()
+    {
+        $descontos = Desconto::all();
+        return view('manutencao.descontos.index', ['descontos'=>$descontos,'isMobile' => $this->agent->isMobile()]);
+    }
+
+    public function create()
+    {
+        $destinos = Destino::all();
+        $destinosNome = array();
+        foreach ($destinos as $destino){
+            $destinosNome[ $destino->codigo ] = $destino->descricao;
+        }
+        return view('manutencao.descontos.form',['destinos'=>$destinosNome, 'isMobile' => $this->agent->isMobile()]);
+    }
+
+    public function edit(Desconto $desconto)
+    {
+        $destinos = Destino::all();
+        $destinosNome = array();
+        foreach ($destinos as $destino){
+            $destinosNome[ $destino->codigo ] = $destino->descricao;
+        }
+        return view('manutencao.descontos.form', ['destinos'=>$destinosNome,'desconto'=>$desconto,'isMobile' => $this->agent->isMobile()]);
+    }
+
     public function store(Request $request)
     {
         $this->validate($request, [

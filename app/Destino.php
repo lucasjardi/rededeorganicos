@@ -17,4 +17,14 @@ class Destino extends Model
     	'acrescimo'
     ];
 
+    public static function allAsArray()
+    {
+        $destinos = self::all();
+        $destinosNome = array();
+        foreach ($destinos as $destino){
+            $destinosNome[ $destino->codigo ] = $destino->descricao;
+        }
+        return $destinosNome;
+    }
+
 }

@@ -15,4 +15,14 @@ class Unidade extends Model
     protected $fillable = [
     	'descricao'
     ];
+
+    public static function allAsArray()
+    {
+        $unidades = self::all();
+        $unidadesNome = array();
+        foreach ($unidades as $unidade){
+            $unidadesNome[ $unidade->codigo ] = $unidade->descricao;
+        }
+        return $unidadesNome;
+    }
 }

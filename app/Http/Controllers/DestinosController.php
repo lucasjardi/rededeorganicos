@@ -6,9 +6,32 @@ use Illuminate\Http\Request;
 use App\Destino;
 use Auth;
 use Illuminate\Support\Facades\DB;
+use Jenssegers\Agent\Agent;
 
 class DestinosController extends Controller
 {
+    private $agent;
+    public function __construct()
+    {
+        $this->middleware(['auth','isadmin'],['except' => 'setLocalRetirada']);
+        $this->agent = new Agent();
+    }
+
+    public function index()
+    {
+        $destinos = Destino::all();
+        return view('manutencao.destinos.index',['destinos' => $destinos, 'isMobile' => $this->agent->isMobile()]);
+    }
+
+    public function create()
+    {
+        return view('manutencao.destinos.form',['isMobile' => $this->agent->isMobile()]);
+    }
+
+    public function edit(Destino $destino)
+    {
+        return view('manutencao.destinos.form',['destino' => $destino, 'isMobile' => $this->agent->isMobile()]);
+    }
     
     public function store(Request $request)
     {
@@ -31,6 +54,7 @@ class DestinosController extends Controller
         $this->validate($request, [
             'descricao' => 'required'
         ]);
+        $request->merge(['acrescimo' => str_replace(",",".",$request->acrescimo)]);
     	$destino->update( [
             "descricao" => $request->descricao,
             "acrescimo" => $request->acrescimo != '' ? $request->acrescimo : 0
@@ -50,9 +74,6 @@ class DestinosController extends Controller
         return back();
 
     }
-
-
-    // acrescimo de local
 
     public function setLocalRetirada(Request $request)
     {

@@ -10,12 +10,52 @@ use App\Produtor;
 use App\Cliente;
 use App\Cidade;
 use App\Pedido;
+use App\ItemPedido;
+use App\Cesta;
 use App\StatusPedido;
 use App\User;
 use Auth;
 
 class UsersController extends Controller
 {
+    public function solicitarPedido(Request $request)
+    {
+        $this->validate($request, [
+            'local_de_retirada' => 'required'
+        ]);
+        
+        $pedido = new Pedido([
+            'codCliente' => $request->user()->id,
+            'codDestino' => $request->local_de_retirada,
+            'dataPedido' => Carbon::now(),
+            'valor' => $request->total
+        ]);
+
+        if($pedido->save()){ // se salvou o pedido, salva os itens do pedido
+            $cestaUser = Cesta::where('user_id',$request->user()->id)->get();
+            foreach ($cestaUser as $cesta) {
+                $descricao = $cesta->quantidade." ". $cesta->unidade ." de ". $cesta->produto->nome;
+                ItemPedido::create([
+                    'codPedido' => $pedido->codigo,
+                    'codProduto' => $cesta->produto->codigo,
+                    'quantidade' => $cesta->quantidade,
+                    'valorTotal' => $cesta->subtotal,
+                    'descricao' => $descricao
+                ]);
+            }
+
+            foreach ($cestaUser as $cesta) {
+                $cesta->delete();
+            }
+
+            return \Redirect::to('/solicitado')
+            ->with('message','Seu Pedido foi Solicitado! Você será contatado(a) 
+                                        quando estiver pronto para buscá-lo!');
+            // return ["message" => "inserted"];
+        }
+
+        return \Redirect::to('/solicitado')->with('message','Não Foi Possível Fazer o Pedido. Tente Novamente...');
+    }
 
     public function solicitarCadastro(Request $request)
     {
