@@ -6,7 +6,7 @@ $(function () {
 	$('[data-toggle="tooltip"]').tooltip();
 	$('#exampleModal').modal('show');
 
-	$('#valor').mask('#.##0,00', {reverse: true});
+	$('.valor').mask('#.##0,00', {reverse: true});
 	$('#valorItemPedido').mask('#.##0,00', {reverse: true});
 	$('#acrescimo').mask('#.##0,00', {reverse: true});
 

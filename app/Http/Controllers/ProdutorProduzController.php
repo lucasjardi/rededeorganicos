@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\ProdutorProduz;
+use App\ProdutoProduzido;
+use App\ValorUltimaSemana;
 
 class ProdutorProduzController extends Controller
 {
@@ -18,6 +20,17 @@ class ProdutorProduzController extends Controller
 	    	]);
 
     		return ["message" => "ok"];
+    	}
+    }
+
+    public function destroy($codProduto, Request $request)
+    {
+        $produtorProduzObject = ProdutorProduz::where('codProdutor', $request->user()->id)->where('codProduto', $codProduto);
+        if ( $produtorProduzObject->exists() ) {
+            $produtorProduzObject->delete();
+            ValorUltimaSemana::where('codProduto', $codProduto)->delete();
+            ProdutoProduzido::where('codProduto', $codProduto)->delete();
+    		return redirect('/');
     	}
     }
 

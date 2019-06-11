@@ -10,6 +10,7 @@ Route::view('/solicitado','solicitado')->middleware('auth','verificarhorarioaces
 Route::post('/produto_produzido','ProdutoProduzidoController@store')->middleware('auth','verificarhorarioacesso');
 Route::get('/selectItensAgain', 'ProdutoProduzidoController@killSessionAndRedirect')->middleware('auth','verificarhorarioacesso');
 Route::post('/addProdutoAoProdutor','ProdutorProduzController@store')->middleware('auth','verificarhorarioacesso');
+Route::get('/removeProdutoProdutor/{codProduto}','ProdutorProduzController@destroy')->middleware('auth','verificarhorarioacesso');
 Route::get('/getProdutosProdutorProduz', 'ProdutorProduzController@get')->middleware('auth','verificarhorarioacesso');
 Route::post('/solicitarCadastro','UsersController@solicitarCadastro')->name('solicitarCadastro');
 
@@ -49,9 +50,9 @@ Route::resource('destinos', 'DestinosController');
 Route::resource('pedidos','PedidosController');
 Route::resource('descontos', 'DescontosController');
 
+Route::get('/produtos/pesquisa', 'ProdutosController@pesquisaPorNome')->name('pesquisaProduto');
 Route::resource('produtos', 'ProdutosController');
 Route::get('/produtos', 'ProdutosController@index')->name('produtos');
-Route::get('/produtos/pesquisa', 'ProdutosController@pesquisaPorNome')->name('pesquisaProduto');
 Route::patch('/produtos/{produto}/desativar','ProdutosController@desativarProduto')->middleware('isadmin');
 Route::patch('/produtos/{produto}/ativar','ProdutosController@ativarProduto')->middleware('isadmin');
 

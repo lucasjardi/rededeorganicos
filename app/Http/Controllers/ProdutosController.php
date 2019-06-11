@@ -18,7 +18,7 @@ class ProdutosController extends Controller
     private $agent;
     public function __construct()
     {
-        $this->middleware(['auth','isadmin'],['except' => ['index']]);
+        $this->middleware(['auth','isadmin'],['except' => ['index','pesquisaPorNome']]);
         $this->agent = new Agent();
     }
 
@@ -27,7 +27,7 @@ class ProdutosController extends Controller
         $produtos = Produto::with('unidade','grupo')->where('ativo',$ativo)
         ->when(Auth::user()->codNivel==4, function ($query){
             $query->whereNOTIn('codigo',function($query){
-                $query->select('codProduto')->from('produtor_produz');
+                $query->select('codProduto')->from('produtor_produz')->where('codProdutor',Auth::id());
             });
         });
 
@@ -151,7 +151,7 @@ class ProdutosController extends Controller
             $produtos = DB::table("produto")->select('*')
                 ->where( 'nome', 'LIKE', '%' . $term . '%' )
                 ->whereNOTIn('codigo',function($query){
-                $query->select('codProduto')->from('produtor_produz');
+                    $query->select('codProduto')->from('produtor_produz')->where('codProdutor',Auth::id());
                 })
                 ->where('ativo',1)
                 ->paginate(40);

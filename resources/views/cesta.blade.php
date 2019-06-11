@@ -33,7 +33,7 @@
           @foreach($cesta as $c)
           <tr>
             <th scope="row">{{$c->quantidade}} {{$c->unidade}} de {{$c->produto->nome}}</th>
-            <td>R$ {{number_format($c->subtotal, 2, ',', '.')}}</td>
+            <td>R$ @dinheiro($c->subtotal)</td>
             <td>
               {!! Form::open(['method' => 'DELETE', 'url' => 'cesta/'.$c->id, 'style' => 'display: inline']) !!}
                 <button type="submit" class="btn btn-danger btn-sm">Remover</button>

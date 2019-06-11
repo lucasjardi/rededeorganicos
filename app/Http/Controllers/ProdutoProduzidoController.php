@@ -98,7 +98,7 @@ class ProdutoProduzidoController extends Controller
             }
 
         } else {
-            array_push($errors, "Você não selecionou nenhum item.");
+            ProdutoProduzido::where('codProdutor',$request->user()->id)->delete();
         }
 
         if(count($errors) > 0) return \Redirect::to('home')->withErrors($errors);

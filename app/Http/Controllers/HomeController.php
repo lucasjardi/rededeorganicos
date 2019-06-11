@@ -13,6 +13,7 @@ use App\Cliente;
 use App\Produtor;
 use App\ProdutoProduzido;
 use App\Desconto;
+use App\ValorUltimaSemana;
 
 class HomeController extends Controller
 {
@@ -37,13 +38,19 @@ class HomeController extends Controller
         }
         else if( $nivel == 4 ) { // produtor
 
-            $prods = DB::table("produto")
-                ->join('produtor_produz', 'produto.codigo','=','produtor_produz.codProduto')
-                ->leftJoin('valores_produtos_ultima_semana', 'produto.codigo','=','valores_produtos_ultima_semana.codProduto')
-                ->select('produto.*','valores_produtos_ultima_semana.valor')
-                ->where('produtor_produz.codProdutor',Auth::user()->id)
-                ->get();
-            
+            $prodsProduzidos = Produto::whereHas('prod_produzido', function ($query){
+                $query->where('codProdutor', Auth::id());
+            });
+
+            $prods = Produto::whereHas('produtor_produz', function ($query){
+                $query->where('codProdutor', Auth::id());
+            })
+            ->with(['valorultimasemana'=>function ($query){
+                $query->where('codProdutor', Auth::id());
+            }])
+            ->union($prodsProduzidos)
+            ->get();
+                       
             $prodsAux = ProdutoProduzido::where('codProdutor',Auth::user()->id)->get();
             $prodsJaSelecionados = array();
             foreach ($prodsAux as $produto){

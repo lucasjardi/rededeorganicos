@@ -31,11 +31,14 @@
 				      	<p>
 				      		<b>Itens do Pedido:</b> <br>
 					      	@foreach ($pedido->itens as $item)
-					      		- {{$item->descricao}} | R$ {{$item->valorTotal}} <br>
+					      		- {{$item->descricao}} | R$ @dinheiro($item->valorTotal) <br>
 					      	@endforeach
 				      	</p>
-				      	-------------------------------- 
-				      	<p><b>Total:</b> R$ {{$pedido->valor}}</p>
+						  -------------------------------- 
+						<p>
+							@if(!!$pedido->destino->desconto)<b>Desconto:</b> {{$pedido->destino->desconto->porcentagem}}%<br/>@endif
+							<b>Total:</b> R$ @dinheiro($pedido->valor)
+						</p>
 				       	--------------------------------
 				       	<p><b>Destino:</b> {{$pedido->destino->descricao}}</p>
 				      </div>

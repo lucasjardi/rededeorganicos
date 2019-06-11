@@ -43,6 +43,9 @@
                   {{$produto->nome}}
                 </button>
               </h5>
+              <div class="d-inline float-right mt-2" style="cursor: pointer;" onclick="location.href='/removeProdutoProdutor/{{$produto->codigo}}'">
+                <span class="badge badge-secondary badge-pill">Remover do Início</span>
+              </div>
             </div>
 
             <div id="produto{{$produto->codigo}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
@@ -69,8 +72,8 @@
                 <div class="row">
                   <div class="col-md-4">
                     <label>Preço: (R$)</label>
-                    <input id="valor" type="text" class="form-control" name="valor[{{$produto->codigo}}]"
-                    value="{{$produto->valor}}" placeholder="0,00">
+                    <input id="valor" type="text" class="form-control valor" name="valor[{{$produto->codigo}}]"
+                    value="{{!!$produto->valorultimasemana?str_replace('.',',',$produto->valorultimasemana->valor):''}}" placeholder="0,00">
                   </div>
                 </div>
                 <br>

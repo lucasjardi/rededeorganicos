@@ -34,8 +34,18 @@ class Produto extends Model
     	return $this->hasOne('App\Grupo','codigo','codGrupo');
     }
 
-    public function valorultimasemana($value='')
+    public function valorultimasemana()
     {
         return $this->belongsTo('App\ValorUltimaSemana','codigo','codProduto');
+    }
+
+    public function prod_produzido()
+    {
+        return $this->belongsTo('App\ProdutoProduzido','codigo','codProduto');
+    }
+
+    public function produtor_produz()
+    {
+        return $this->belongsTo('App\ProdutorProduz','codigo','codProduto');
     }
 }

@@ -82,7 +82,7 @@ class DestinosController extends Controller
                     ->join('prod_produzido', 'produto.codigo', '=', 'prod_produzido.codProduto')
                     ->join('unidade', 'prod_produzido.codUnidade', '=', 'unidade.codigo')
                     ->join('destino', 'destino.codigo', '=', DB::raw($request->destino))
-                    ->select('produto.codigo','produto.nome','produto.descricao','unidade.descricao AS unidade','prod_produzido.valor as valorpuro','destino.acrescimo', DB::raw("prod_produzido.valor AS valor"))
+                    ->select('produto.codigo','produto.nome','produto.descricao','unidade.descricao AS unidade','prod_produzido.valor as valorpuro','destino.acrescimo', DB::raw("prod_produzido.valor AS valor"),'prod_produzido.codigo as prod_produzido_codigo')
                     ->where('produto.ativo',1)
                     ->get();
 

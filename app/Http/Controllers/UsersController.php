@@ -15,6 +15,7 @@ use App\Cesta;
 use App\StatusPedido;
 use App\User;
 use Auth;
+use Carbon\Carbon;
 
 class UsersController extends Controller
 {
@@ -133,7 +134,7 @@ class UsersController extends Controller
     public function getPedidosUser(Request $request)
     {
         $pedidos = Pedido::where('codCliente',$request->user()->id)
-                            ->with('itens','st')
+                            ->with('itens','st','destino.desconto')
                             ->orderBy('dataPedido', false)
                             ->get();
         // $statusespedidos = StatusPedido::all()->toArray();

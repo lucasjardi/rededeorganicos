@@ -27,4 +27,9 @@ class Destino extends Model
         return $destinosNome;
     }
 
+    public function desconto()
+    {
+        return $this->hasOne(Desconto::class,'destino_id');
+    }
+
 }
