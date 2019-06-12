@@ -133,13 +133,27 @@ class UsersController extends Controller
 
     public function getPedidosUser(Request $request)
     {
-        $pedidos = Pedido::where('codCliente',$request->user()->id)
-                            ->with('itens','st','destino.desconto')
-                            ->orderBy('dataPedido', false)
-                            ->get();
-        // $statusespedidos = StatusPedido::all()->toArray();
-
-        return view('pedidos')->with(['pedidos' => $pedidos]);
+        $pedidos = null;
+        $model = '';
+        if($request->user()->codNivel === 5){
+            $pedidos = Pedido::where('codCliente',$request->user()->id)
+                            ->with('itens','st')
+                            ->orderBy('dataPedido', false);
+            $model='cliente';
+        }
+        if($request->user()->codNivel === 4){
+            $pedidos = Pedido::with('itens','st')->whereHas('itens', function ($query){
+                $query->whereHas('produto', function ($query){
+                    $query->whereHas('prod_produzido', function ($query){
+                        $query->where('codProdutor',Auth::id());
+                    });
+                });
+            })->whereHas('st', function ($query){
+                $query->where('descricao','Confirmado');
+            });
+            $model='produtor';
+        }
+        return view('pedidos')->with(['pedidos' => $pedidos->get(),'model'=>$model]);
     }
 
 
