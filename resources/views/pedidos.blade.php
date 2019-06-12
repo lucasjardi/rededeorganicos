@@ -3,7 +3,8 @@
 @section('content')
 <div class="container">
 	<div class="bg-light p-3">
-		<h1>Meus Pedidos</h1>
+		@if($model==='cliente') <h1>Meus Pedidos</h1> @endif
+		@if($model==='produtor') <h1>Pedidos com produtos de {{Auth::user()->name}}</h1> @endif
 		    <div class="accordion" id="accordionExample">
               @forelse ($pedidos as $pedido)
 			  	<div class="card">

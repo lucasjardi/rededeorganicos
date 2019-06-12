@@ -150,7 +150,8 @@ class UsersController extends Controller
                 });
             })->whereHas('st', function ($query){
                 $query->where('descricao','Confirmado');
-            });
+            })
+            ->orderBy('dataPedido', false);
             $model='produtor';
         }
         return view('pedidos')->with(['pedidos' => $pedidos->get(),'model'=>$model]);

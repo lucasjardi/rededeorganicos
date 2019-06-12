@@ -25,16 +25,16 @@
 		      	@if(Auth::user()->codNivel != 5 && Auth::user()->codNivel > 2)
 		      	<a class="nav-link {{ Request::is('produtos') ? 'active' : '' }}" href="{{ route('produtos') }}">Produtos</a>
 		      	@endif
-		      </li>
+			  </li>
+			  <li class="nav-item {{ Request::is('user/pedidos') ? 'active' : '' }}">
+				<a class="nav-link" href="{{ route('user.pedidos') }}">Pedidos</a>
+			  </li>
 		      @if(Auth::user()->codNivel === 5) <!-- Cliente -->
 		      	<menucesta inline-template>
 		      	<li class="nav-item {{ Request::is('cesta') ? 'active' : '' }}">
 			      	<a class="nav-link" href="{{ route('cesta') }}"><i class="fas fa-shopping-basket"></i> Cesta <span class="bg-white p-1 rounded text-dark font-weight-bold">@{{count}}</span></a>
 			      </li>
 		      	</menucesta>
-		      <li class="nav-item {{ Request::is('user/pedidos') ? 'active' : '' }}">
-		      	<a class="nav-link" href="{{ route('user.pedidos') }}">Pedidos</a>
-		      </li>
 		      @endif
 		      	@if(Auth::user()->codNivel < 4) <!-- Administradores -->
 			      <li class="nav-item dropdown">
