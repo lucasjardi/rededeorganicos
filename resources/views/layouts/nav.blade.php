@@ -26,9 +26,6 @@
 		      	<a class="nav-link {{ Request::is('produtos') ? 'active' : '' }}" href="{{ route('produtos') }}">Produtos</a>
 		      	@endif
 			  </li>
-			  <li class="nav-item {{ Request::is('user/pedidos') ? 'active' : '' }}">
-				<a class="nav-link" href="{{ route('user.pedidos') }}">Pedidos</a>
-			  </li>
 		      @if(Auth::user()->codNivel === 5) <!-- Cliente -->
 		      	<menucesta inline-template>
 		      	<li class="nav-item {{ Request::is('cesta') ? 'active' : '' }}">
@@ -63,7 +60,10 @@
 			          @endif
 			        </div>
 			      </li>
-			    @endif
+				@endif
+				<li class="nav-item {{ Request::is('user/pedidos') ? 'active' : '' }}">
+					<a class="nav-link" href="{{ route('user.pedidos') }}">Pedidos</a>
+				</li>
 		    @endif
 	      @endauth
 	    </ul>

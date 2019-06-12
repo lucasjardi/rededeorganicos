@@ -7,6 +7,14 @@
     <h1>Selecione o que você tem disponível</h1>
     <p class="font-italic">Clique nos itens para inserir as informações como Unidade e Preço. <br>
     Após ter selecionado tudo, clique no botão <b class="text-success">PRONTO</b></p>
+    @if( Session::has('mensagem_sucesso') )
+          <div class="alert alert-success alert-dismissible fade show">
+              {{ Session::get('mensagem_sucesso') }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+    @endif
   </div>
 
 @if ($errors->any())

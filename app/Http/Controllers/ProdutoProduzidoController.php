@@ -102,7 +102,10 @@ class ProdutoProduzidoController extends Controller
         }
 
         if(count($errors) > 0) return \Redirect::to('home')->withErrors($errors);
-        else return \Redirect::to('home');
+        else{
+            \Session::flash('mensagem_sucesso','Lista salva!');
+            return \Redirect::to('home');
+        }
     }
 
     /**
