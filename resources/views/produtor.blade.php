@@ -37,7 +37,6 @@
     @isset ($produtos)
     <div class="accordion" id="accordionExample">
         @forelse ($produtos as $produto)
-        <card inline-template>
           <div class="card">
             <div 
             class="card-header {{array_key_exists($produto->codigo,$prodsjaselecionados) ? 'bg-light' : 'bg-white'}}" 
@@ -87,13 +86,12 @@
                 <br>
                 <div class="row">
                   <div class="col-md-4">
-                    <label for="{{$produto->codigo}}" class="btn btn-primary">Selecionar</label>
+                    <label onclick="selectOnlyIfNotSelected({{$produto->codigo}})" class="btn btn-primary">Selecionar</label>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </card>
         @empty
         <div class="alert alert-warning" role="alert">
           Você ainda não escolheu produtos.

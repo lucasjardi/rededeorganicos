@@ -10,8 +10,8 @@
 	        <a class="nav-link" href="{{route('home')}}">Início</a>
 	      </li>
 	      @guest <!-- Visitantes -->
-	      <li class="nav-item">
-	        <a class="nav-link" href="#">História</a>
+	      <li class="nav-item {{ Request::is('historia') ? 'active' : '' }}">
+	        <a class="nav-link" href="/historia">História</a>
 	      </li>
 	      <li class="nav-item">
 	        <a class="nav-link" href="#">Contato</a>
@@ -20,18 +20,23 @@
 
 	      <!-- Usuario Logado -->
 	      @auth
-	      	@if(Auth::user()->ativo === 1) <!-- Usuario Ativo -->
-		      <li class="nav-item">
-		      	@if(Auth::user()->codNivel != 5 && Auth::user()->codNivel > 2)
-		      	<a class="nav-link {{ Request::is('produtos') ? 'active' : '' }}" href="{{ route('produtos') }}">Produtos</a>
-		      	@endif
-			  </li>
+			  @if(Auth::user()->ativo === 1) <!-- Usuario Ativo -->
+				@if(Auth::user()->codNivel != 5 && Auth::user()->codNivel > 2)
+					<li class="nav-item">
+						<a class="nav-link {{ Request::is('produtos') ? 'active' : '' }}" href="{{ route('produtos') }}">Produtos</a>
+					</li>
+				@endif
 		      @if(Auth::user()->codNivel === 5) <!-- Cliente -->
 		      	<menucesta inline-template>
-		      	<li class="nav-item {{ Request::is('cesta') ? 'active' : '' }}">
+				  <li class="nav-item {{ Request::is('cesta') ? 'active' : '' }}">
 			      	<a class="nav-link" href="{{ route('cesta') }}"><i class="fas fa-shopping-basket"></i> Cesta <span class="bg-white p-1 rounded text-dark font-weight-bold">@{{count}}</span></a>
 			      </li>
-		      	</menucesta>
+				</menucesta>
+			  @endif
+			  @if(Auth::user()->codNivel === 4 || Auth::user()->codNivel === 5)
+				<li class="nav-item {{ Request::is('user/pedidos') ? 'active' : '' }}">
+					<a class="nav-link" href="{{ route('user.pedidos') }}">Pedidos</a>
+				</li>
 		      @endif
 		      	@if(Auth::user()->codNivel < 4) <!-- Administradores -->
 			      <li class="nav-item dropdown">
@@ -61,9 +66,6 @@
 			        </div>
 			      </li>
 				@endif
-				<li class="nav-item {{ Request::is('user/pedidos') ? 'active' : '' }}">
-					<a class="nav-link" href="{{ route('user.pedidos') }}">Pedidos</a>
-				</li>
 		    @endif
 	      @endauth
 	    </ul>

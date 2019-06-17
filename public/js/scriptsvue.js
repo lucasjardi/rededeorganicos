@@ -12,6 +12,7 @@ Vue.component('card', {
 
   methods: {
     adicionarNaCesta(codigo, valor) {
+        if(!this.quantidade) return;
         this.btnDisabled = true;
       	let prod = { 
           produto_codigo: codigo, 

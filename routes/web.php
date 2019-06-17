@@ -2,6 +2,8 @@
 
 Auth::routes();
 
+Route::view('/historia', 'historia');
+
 Route::get('/', 'HomeController@index')->middleware('auth');
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 Route::get('/retirar', 'DestinosController@setLocalRetirada')->middleware('auth','verificarhorarioacesso');

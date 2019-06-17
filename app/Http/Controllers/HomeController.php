@@ -33,7 +33,7 @@ class HomeController extends Controller
         $nivel = Auth::user()->codNivel;
 
         if ( $nivel < 3 ) { // super usuarios
-            $pedidos = Pedido::with('usuario', 'cliente','itens','destino')->where('status',1)->orderBy('dataPedido',false)->paginate(10);
+            $pedidos = Pedido::with('usuario', 'cliente','itens','destino.desconto')->where('status',1)->orderBy('dataPedido',false)->paginate(10);
             return view('admin')->with(['pedidos' => $pedidos]);
         }
         else if( $nivel == 4 ) { // produtor

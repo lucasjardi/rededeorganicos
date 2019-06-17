@@ -49,10 +49,9 @@ class UsersController extends Controller
                 $cesta->delete();
             }
 
-            return \Redirect::to('/solicitado')
-            ->with('message','Seu Pedido foi Solicitado! Você será contatado(a) 
-                                        quando estiver pronto para buscá-lo!');
-            // return ["message" => "inserted"];
+            $pedido->load('itens','destino.desconto');
+
+            return view('solicitado',['pedido'=>$pedido]);
         }
 
         return \Redirect::to('/solicitado')->with('message','Não Foi Possível Fazer o Pedido. Tente Novamente...');

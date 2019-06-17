@@ -19,6 +19,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+                    <a href="{{url('/')}}" class="btn btn-success btn-block">Ir para o início</a>
                 @else
 				<form action="{{ route('solicitarCadastro') }}" method="POST" class="mt-3">
                     @csrf

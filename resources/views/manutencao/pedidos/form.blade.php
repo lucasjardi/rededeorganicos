@@ -40,7 +40,7 @@
       {!! Form::label('codDestino','Destino (Obrigatório)') !!}
       {{ Form::select('codDestino',$destinos,null, ['class' => 'form-control']) }}
       {!! Form::label('valor','Valor (R$) (Obrigatório)') !!}
-      {!! Form::input('text','valor',null, ['class' => 'form-control', 'placeholder' => '00,00']) !!}
+      {!! Form::input('text','valor',null, ['class' => 'form-control valor', 'placeholder' => '00,00']) !!}
       {!! Form::label('status','Status (Obrigatório)') !!}
       {{ Form::select('status',$statuses,null, ['class' => 'form-control']) }}
 

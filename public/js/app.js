@@ -9,6 +9,8 @@ $(function () {
 	$('.valor').mask('#.##0,00', {reverse: true});
 	$('#valorItemPedido').mask('#.##0,00', {reverse: true});
 	$('#acrescimo').mask('#.##0,00', {reverse: true});
+	$('#cpf').mask('000.000.000-00', {reverse: true});
+	$('#telefone').mask('(00) 00000-0000');
 
 	$("#nomeCliente" ).autocomplete({
 		source: "/clientesAutoComplete",
@@ -106,5 +108,13 @@ function mudaEstiloCardCheckbox(cb) {
 	} else{
 		$(cb).parent().removeClass("bg-seen");
 		$(cb).parent().addClass("bg-white");
+	}
+}
+
+function selectOnlyIfNotSelected(codigo){
+	if(!$('#'+codigo).is(":checked")){
+		$('#'+codigo).prop('checked', true);
+		$('#'+codigo).parent().removeClass("bg-white");
+		$('#'+codigo).parent().addClass("bg-seen");
 	}
 }

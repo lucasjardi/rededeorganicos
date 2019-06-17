@@ -17,7 +17,7 @@
 				      <h5 class="mb-0 d-inline">
 				        <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#pedido{{$pedido->codigo}}" aria-expanded="true" aria-controls="pedido{{$pedido->codigo}}">
 				          <i class="fas fa-shopping-basket"></i> 
-				          @datetime($pedido->dataPedido) - Total de R$ {{$pedido->valor}}
+				          @datetime($pedido->dataPedido) - Total de R$ @dinheiro($pedido->valor)
 				        </button>
 				      </h5>
 				      <span class="float-right text-secondary bg-white p-1 font-weight-bold">
@@ -30,13 +30,16 @@
                       <h3>{{$pedido->st->descricao}}</h3>
                       <hr>
 				      	<p>
+							@php $subTotal = 0; @endphp
 				      		<b>Itens do Pedido:</b> <br>
 					      	@foreach ($pedido->itens as $item)
-					      		- {{$item->descricao}} | R$ @dinheiro($item->valorTotal) <br>
+								  - {{$item->descricao}} | R$ @dinheiro($item->valorTotal) <br>
+								  @php $subTotal += $item->valorTotal; @endphp
 					      	@endforeach
 				      	</p>
 						  -------------------------------- 
 						<p>
+							<b>Subtotal:</b> R$ @dinheiro($subTotal) <br/>
 							@if(!!$pedido->destino->desconto)<b>Desconto:</b> {{$pedido->destino->desconto->porcentagem}}%<br/>@endif
 							<b>Total:</b> R$ @dinheiro($pedido->valor)
 						</p>

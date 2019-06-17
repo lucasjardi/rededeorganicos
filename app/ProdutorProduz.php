@@ -10,8 +10,6 @@ class ProdutorProduz extends Model
 
     protected $primaryKey = 'codigo';
 
-    public $timestamps = false;
-
     protected $fillable = [
     	'codigo',
     	'codProdutor',

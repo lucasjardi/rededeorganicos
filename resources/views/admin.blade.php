@@ -22,13 +22,19 @@
 				    <div id="pedido{{$pedido->codigo}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
 				      <div class="card-body">
 				      	<p>
+							@php $subTotal = 0; @endphp
 				      		<b>Itens do Pedido:</b> <br>
 					      	@foreach ($pedido->itens as $item)
-					      		- {{$item->descricao}} | R$ {{$item->valorTotal}} <br>
+								- {{$item->descricao}} | R$ {{$item->valorTotal}} <br>
+								@php $subTotal += $item->valorTotal; @endphp
 					      	@endforeach
 				      	</p>
-				      	-------------------------------- 
-				      	<p><b>Total:</b> R$ {{$pedido->valor}}</p>
+						  -------------------------------- 
+						<p>
+							<b>Subtotal:</b> R$ @dinheiro($subTotal) <br/>
+							@if(!!$pedido->destino->desconto)<b>Desconto:</b> {{$pedido->destino->desconto->porcentagem}}%<br/>@endif
+							<b>Total:</b> R$ @dinheiro($pedido->valor)
+						</p>
 				      	--------------------------------
 				       	<p>
 				       		<b>Solicitado por:</b> {{$pedido->usuario->name}} <br>

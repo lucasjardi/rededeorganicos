@@ -48,17 +48,16 @@
               <h5 class="mb-0 d-inline">
                 <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#produto{{$produto->prod_produzido_codigo}}" aria-expanded="true" aria-controls="produto{{$produto->prod_produzido_codigo}}">
                   <i class="fas fa-shopping-basket"></i> 
-                  {{$produto->nome}} <span class="badge badge-success badge-pill">R$ {{$produto->valor}}/{{$produto->unidade}}</span>
+                  {{$produto->nome}} <span class="badge badge-success badge-pill">R$ @dinheiro($produto->valor)/{{$produto->unidade}}</span>
                 </button>
               </h5>
             </div>
 
             <div id="produto{{$produto->prod_produzido_codigo}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
               <div class="card-body">
-                @if ($produto->descricao) <p>{{$produto->descricao}}</p> @endif
-                <p>Valor: R$ {{$produto->valorpuro}} <br>
-                  {{-- Acréscimo para Local de Entrega: R$ {{$produto->acrescimo}} <br> --}}
-                  <b>Total: R$ {{$produto->valor}}</b>
+                <p>
+                  @if ($produto->descricao)<b>Descrição:</b> {{$produto->descricao}}<br /> @endif
+                  <b>Valor:</b> R$ @dinheiro($produto->valorpuro)
                 </p>
                 <input class="qtdProd" type="number" v-model="quantidade" style="width: 100px;" placeholder="Quantidade" min="0" {{$produto->unidade == "Kg" ? "step=0.1" : ""}} />
                 <button id="addNaCesta" 
