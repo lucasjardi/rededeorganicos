@@ -79,3 +79,9 @@ Route::view('forbidden','forbidden');
 
 Route::patch('horarioacessocliente','HorariosAcessoController@setHorarioAcessoCliente');
 Route::patch('horarioacessoprodutor','HorariosAcessoController@setHorarioAcessoProdutor');
+
+Route::get('relatorios-pedidos','PedidosController@relatoriosView')->name('relatorios');
+Route::post('gerarRelatorio','PedidosController@relatorio');
+
+
+Route::post('gerarCSV','PedidosController@gerarCSV');

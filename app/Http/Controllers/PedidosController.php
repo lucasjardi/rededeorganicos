@@ -16,6 +16,7 @@ use App\Destino;
 use App\StatusPedido;
 use Auth;
 use Jenssegers\Agent\Agent;
+use App\Cliente;
 
 class PedidosController extends Controller
 {
@@ -178,5 +179,76 @@ class PedidosController extends Controller
         \Session::flash('mensagem_sucesso', 'Pedido deletado com sucesso!');
 
         return back();
+    }
+
+    public function relatoriosView()
+    {
+        return view('relatorios', [
+            'clientes' => Cliente::with('usuario')->get(),
+            'destinos' => Destino::all(),
+            'statuses' => StatusPedido::all()
+        ]);
+    }
+
+    public function relatorio(Request $request)
+    {
+        $pedidos = Pedido::with('cliente','destino','st','usuario')
+        ->whereBetween('dataPedido', [request('dataPedidoInicio'), request('dataPedidoFim')])
+        ->when(request('valorInicial')!==null, function ($query){
+            $query->where('valor','>=',request('valorInicial'));
+        })
+        ->when(request('valorFinal')!==null, function ($query){
+            $query->where('valor','<=',request('valorFinal'));
+        })
+        ->when(request('clientes'), function ($query){
+            $query->whereIn('codCliente',request('clientes'));
+        })
+        ->when(request('destinos'), function ($query){
+            $query->whereIn('codDestino',request('destinos'));
+        })
+        ->when(request('statuses'), function ($query){
+            $query->whereIn('status',request('statuses'));
+        })
+        ->get();
+
+        $request->flash();
+
+        return view('relatorios', [
+            'pedidos'=>$pedidos,
+            'clientes' => Cliente::with('usuario')->get(),
+            'destinos' => Destino::all(),
+            'statuses' => StatusPedido::all()
+        ]);
+    }
+
+    public function gerarCSV(Request $request)
+    {
+        $url = 'https://json-csv.com/api/getcsv';
+        $email = 'negeralej@uber-mail.com';
+        $json = $request->input('pedidos');
+
+        $postdata = http_build_query(
+            array(
+                'email' => $email,
+                'json' => $json
+            )
+        );
+
+        $opts = array(
+            'http' => array(
+                'method'  => 'POST',
+                'header'  => 'Content-type: application/x-www-form-urlencoded',
+                'content' => $postdata
+            )
+        );
+        $filename='relatorio_pedidos_'.date("d_m_y");
+        // Download the file
+        header('Content-Disposition: attachment; filename="'.$filename.'.csv"');
+        header("Content-Type: text/csv");
+
+        $context  = stream_context_create($opts);
+        $result = file_get_contents($url, false, $context);
+
+        print $result;
     }
 }

@@ -81,3 +81,7 @@ select[readonly] {
 	-webkit-transform: scale(2); /* Safari and Chrome */
 	-o-transform: scale(2); /* Opera */
 }
+
+.hoverable:hover{
+	background-color: #eee !important;
+}
