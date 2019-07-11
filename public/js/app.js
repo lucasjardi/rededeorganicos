@@ -60,7 +60,7 @@ $("#criarNovoGrupo").click(function () {
 $("#btnSalvarGrupo").click(function () {
 	let descricao = $("#grupoDescricao").val();
 	if(descricao) {
-		axios.post('/grupos', {
+		axios.post('/save-group-only', {
 			descricao: descricao
 		})
 		.then(function (response) {

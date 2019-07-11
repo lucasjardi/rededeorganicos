@@ -46,11 +46,15 @@ Route::prefix('manutencao')->middleware('auth','isadmin')->group(function (){
     Route::get('/desconto/{desconto}/editar','DescontosController@edit');
     Route::get('horarios-de-acesso/cliente','ManutencaoController@horariosAcessoCliente')->name('manutencao.horariosacessocliente');
     Route::get('horarios-de-acesso/produtor','ManutencaoController@horariosAcessoProdutor')->name('manutencao.horariosacessoprodutor');
+    Route::get('/grupos','GruposController@index')->name('manutencao.grupos');
+    Route::get('/grupos/{grupo}/editar','GruposController@edit');
+    Route::get('/grupos/novo','GruposController@create')->name('manutencao.novo.grupo');
 });
 
 Route::resource('destinos', 'DestinosController');
 Route::resource('pedidos','PedidosController');
 Route::resource('descontos', 'DescontosController');
+Route::resource('grupos', 'GruposController');
 
 Route::get('/produtos/pesquisa', 'ProdutosController@pesquisaPorNome')->name('pesquisaProduto');
 Route::resource('produtos', 'ProdutosController');
@@ -70,7 +74,7 @@ Route::prefix('user')->middleware('auth','verificarhorarioacesso')->group(functi
     Route::get('/pedidos','UsersController@getPedidosUser')->name('user.pedidos');
 });
 
-Route::post('/grupos','ManutencaoController@saveGroup');
+Route::post('/save-group-only','ManutencaoController@saveGroup');
 
 Route::get('/clientesAutoComplete','UsersController@getClientes');
 Route::get('/produtosAutoComplete','ProdutosController@pesquisaPorNome');
