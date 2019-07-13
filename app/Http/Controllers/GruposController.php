@@ -4,9 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Grupo;
 use Illuminate\Http\Request;
+use Jenssegers\Agent\Agent;
 
 class GruposController extends Controller
 {
+    protected $agent;
+
+    public function __construct()
+    {
+        $this->agent = new Agent();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +22,7 @@ class GruposController extends Controller
     public function index()
     {
         $grupos = Grupo::all();
-    	return view('manutencao.grupos.index')->with(['grupos' => $grupos, 'isMobile' => false]);
+    	return view('manutencao.grupos.index')->with(['grupos' => $grupos, 'isMobile' => $this->agent->isMobile()]);
     }
 
     /**
@@ -25,7 +32,7 @@ class GruposController extends Controller
      */
     public function create()
     {
-        return view('manutencao.grupos.form', ['isMobile' => false]);
+        return view('manutencao.grupos.form', ['isMobile' => $this->agent->isMobile()]);
     }
 
     /**
@@ -63,7 +70,7 @@ class GruposController extends Controller
      */
     public function edit(Grupo $grupo)
     {
-        return view('manutencao.grupos.form', ['isMobile' => false, 'grupo' => $grupo]);
+        return view('manutencao.grupos.form', ['isMobile' => $this->agent->isMobile(), 'grupo' => $grupo]);
     }
 
     /**

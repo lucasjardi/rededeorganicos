@@ -16,14 +16,22 @@ use App\StatusPedido;
 use App\User;
 use Auth;
 use Carbon\Carbon;
+use Jenssegers\Agent\Agent;
 
 class UsersController extends Controller
 {
+    protected $agent;
+
+    public function __construct()
+    {
+        $this->agent = new Agent();
+    }
+
     public function index()
     {
         return view('manutencao.users.index', [
             'users' => User::with('nivel','produtor.cidade','cliente.cidade')->whereHas('nivel')->where('email','!=','rededeorganicososorio@gmail.com')->latest()->get(),
-            'isMobile'=>false
+            'isMobile'=>$this->agent->isMobile()
         ]);
     }
 
@@ -44,7 +52,7 @@ class UsersController extends Controller
             'user' => $user,
             'niveis' => [4=>'Produtor',5=>'Cliente'],
             'cidades' => $cidadesNome,
-            'isMobile'=>false
+            'isMobile'=>$this->agent->isMobile()
         ]);
     }
 

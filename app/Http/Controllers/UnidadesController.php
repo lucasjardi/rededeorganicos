@@ -4,9 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Unidade;
 use Illuminate\Http\Request;
+use Jenssegers\Agent\Agent;
 
 class UnidadesController extends Controller
 {
+    protected $agent;
+
+    public function __construct()
+    {
+        $this->agent = new Agent();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +22,7 @@ class UnidadesController extends Controller
     public function index()
     {
         $unidades = Unidade::all();
-    	return view('manutencao.unidades.index')->with(['unidades' => $unidades, 'isMobile' => false]);
+    	return view('manutencao.unidades.index')->with(['unidades' => $unidades, 'isMobile' => $this->agent->isMobile()]);
     }
 
     /**
@@ -25,7 +32,7 @@ class UnidadesController extends Controller
      */
     public function create()
     {
-        return view('manutencao.unidades.form', ['isMobile' => false]);
+        return view('manutencao.unidades.form', ['isMobile' => $this->agent->isMobile()]);
     }
 
     /**
@@ -63,7 +70,7 @@ class UnidadesController extends Controller
      */
     public function edit(Unidade $unidade)
     {
-        return view('manutencao.unidades.form', ['isMobile' => false, 'unidade' => $unidade]);
+        return view('manutencao.unidades.form', ['isMobile' => $this->agent->isMobile(), 'unidade' => $unidade]);
     }
 
     /**
