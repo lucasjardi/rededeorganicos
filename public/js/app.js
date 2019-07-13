@@ -120,3 +120,17 @@ function selectOnlyIfNotSelected(codigo){
 		$('#'+codigo).parent().addClass("bg-seen");
 	}
 }
+
+function showDetails(object) {
+	let p = document.querySelector('#modalInfoParagraph');
+	for (let prop in object) {
+		if (object.hasOwnProperty(prop) && object[prop]) {
+			p.innerHTML+= '<b>' + prop + '</b> : ' + object[prop] + '<br>';
+		}
+	}
+	$('#myModal').modal();
+}
+
+function closeModalDetails() {
+	document.querySelector('#modalInfoParagraph').innerHTML='';
+}

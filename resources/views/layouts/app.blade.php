@@ -34,6 +34,8 @@
 		</section>
 	</div>
 
+	@include('components.modals')
+
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="{{asset('js/axios.min.js')}}"></script>
 	<script src="{{asset('js/vue.min.js')}}"></script>

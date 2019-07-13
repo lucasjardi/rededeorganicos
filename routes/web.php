@@ -49,12 +49,17 @@ Route::prefix('manutencao')->middleware('auth','isadmin')->group(function (){
     Route::get('/grupos','GruposController@index')->name('manutencao.grupos');
     Route::get('/grupos/{grupo}/editar','GruposController@edit');
     Route::get('/grupos/novo','GruposController@create')->name('manutencao.novo.grupo');
+    Route::get('/users','UsersController@index')->name('manutencao.users');
+    Route::get('/users/{user}/editar','UsersController@edit');
+    Route::get('/users/novo','UsersController@create')->name('manutencao.novo.user');
 });
 
 Route::resource('destinos', 'DestinosController');
 Route::resource('pedidos','PedidosController');
 Route::resource('descontos', 'DescontosController');
 Route::resource('grupos', 'GruposController');
+Route::patch('/users/{user}', 'UsersController@update');
+Route::delete('/users/{user}', 'UsersController@destroy');
 
 Route::get('/produtos/pesquisa', 'ProdutosController@pesquisaPorNome')->name('pesquisaProduto');
 Route::resource('produtos', 'ProdutosController');

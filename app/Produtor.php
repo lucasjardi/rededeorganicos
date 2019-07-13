@@ -33,6 +33,6 @@ class Produtor extends Model
 
     public function cidade()
     {
-    	return $this->belongsTo('App\Cidade','codCidade','codigo');
+    	return $this->hasOne('App\Cidade','codigo','codCidade');
     }
 }

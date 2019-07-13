@@ -19,6 +19,79 @@ use Carbon\Carbon;
 
 class UsersController extends Controller
 {
+    public function index()
+    {
+        return view('manutencao.users.index', [
+            'users' => User::with('nivel','produtor.cidade','cliente.cidade')->whereHas('nivel')->where('email','!=','rededeorganicososorio@gmail.com')->latest()->get(),
+            'isMobile'=>false
+        ]);
+    }
+
+    public function edit(User $user)
+    {
+        if($user->codNivel==4)
+            $user->load('produtor.cidade');
+        elseif($user->codNivel==5)
+            $user->load('cliente.cidade');
+        
+        $cidades = Cidade::all();
+        $cidadesNome = [];
+        foreach($cidades as $cidade){
+            $cidadesNome[$cidade->codigo] = $cidade->descricao;
+        }
+
+        return view('manutencao.users.form', [
+            'user' => $user,
+            'niveis' => [4=>'Produtor',5=>'Cliente'],
+            'cidades' => $cidadesNome,
+            'isMobile'=>false
+        ]);
+    }
+
+    public function update(User $user, Request $request)
+    {
+        $user->fill($request->all());
+        if( $user->save() ){
+            if($request->produtor && $request->produtor['telefone'] && $request->produtor['endereco']) {
+                if($user->produtor()->count() > 0)
+                    $produtor = Produtor::find($user->id);
+                else
+                    $produtor = new Produtor;
+                $produtor->codigo = $user->id;
+                $produtor->codCertificado = 1;
+                $produtor->codCidade = $request->produtor['cidade']['codigo'];
+                $produtor->telefone = $request->produtor['telefone'];
+                $produtor->endereco = $request->produtor['endereco'];
+                $produtor->save();
+            }
+            if($request->cliente) {
+                if($user->cliente()->count() > 0)
+                    $cliente = Cliente::find($user->id);
+                else
+                    $cliente = new Cliente;
+                $cliente->codigo = $user->id;
+                $cliente->codCidade = $request->cliente['cidade']['codigo'];
+                $cliente->cpf = $request->cliente['cpf'];
+                $cliente->telefone = $request->cliente['telefone'];
+                $cliente->endereco = $request->cliente['endereco'];
+                $cliente->save();
+            }
+        }
+
+        \Session::flash('mensagem_sucesso','Usuário Atualizado com Sucesso!');
+
+        return back();
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        \Session::flash('mensagem_sucesso','Usuário Deletado com Sucesso!');
+
+        return back();
+    }
+
     public function solicitarPedido(Request $request)
     {
         $this->validate($request, [

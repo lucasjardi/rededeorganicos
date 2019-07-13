@@ -28,6 +28,6 @@ class Cliente extends Model
 
     public function cidade()
     {
-    	return $this->hasOne('App\Cidade','codCidade','codigo');
+    	return $this->hasOne('App\Cidade','codigo','codCidade');
     }
 }

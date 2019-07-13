@@ -62,7 +62,7 @@
 					  <a class="dropdown-item" href="{{ route('manutencao.horariosacessoprodutor') }}">Horários de Acesso - Produtor</a>
 					  <a class="dropdown-item" href="{{ route('manutencao.grupos') }}">Grupos</a>
 			          @if(Auth::user()->codNivel < 3) <!-- Super Usuarios -->
-			          <a class="dropdown-item disabled" href="#">Usuários</a>
+			          <a class="dropdown-item" href="{{ route('manutencao.users') }}">Usuários</a>
 			          @endif
 			        </div>
 			      </li>
