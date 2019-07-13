@@ -39,6 +39,7 @@
       {!! Form::input('text','nome',null, ['class' => 'form-control', 'placeholder' => 'Nome do Produto']) !!}
       {!! Form::label('codUnidade','Unidade (Obrigatório)') !!}
       {{ Form::select('codUnidade',$unidades,null, ['class' => 'form-control']) }}
+      <a href="" id="criarNovaUnidade">Criar nova unidade</a><br>
       {!! Form::label('codGrupo','Grupo (Obrigatório)') !!}
       {{ Form::select('codGrupo', $grupos,null, ['class' => 'form-control']) }}
       <a href="" id="criarNovoGrupo">Criar novo grupo</a><br><br>
@@ -60,27 +61,4 @@
       {!! Form::close() !!}
   </div>
 </div>
-
-<div class="modal" tabindex="-1" role="dialog" id="criarGrupo">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Novo Grupo</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              
-              <div class="form-group">
-                  <label for="descricao">Nome do Grupo: </label>
-                  <input type="text" id="grupoDescricao" class="form-control" placeholder="Chás">
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button id="btnSalvarGrupo" type="button" class="btn btn-primary">Salvar</button>
-            </div>
-          </div>
-        </div>
-      </div>
 @endsection

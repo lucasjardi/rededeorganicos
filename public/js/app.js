@@ -57,6 +57,12 @@ $("#criarNovoGrupo").click(function () {
 	event.preventDefault();
 });
 
+$("#criarNovaUnidade").click(function () {
+	$('#criarUnidade').modal('show');
+
+	event.preventDefault();
+});
+
 $("#btnSalvarGrupo").click(function () {
 	let descricao = $("#grupoDescricao").val();
 	if(descricao) {
@@ -73,6 +79,29 @@ $("#btnSalvarGrupo").click(function () {
 			$('#criarGrupo').modal('toggle');
 			$("#grupoDescricao").val("");
 			$('#codGrupo').val(response.data.codigo);
+		})
+		.catch(function (error) {
+			alert("Ocorreu um erro. Recarregue a pagina e tente de novo.");
+		});
+	}
+});
+
+$("#btnSalvarUnidade").click(function () {
+	let descricao = $("#unidadeDescricao").val();
+	if(descricao) {
+		axios.post('/save-unidade-only', {
+			descricao: descricao
+		})
+		.then(function (response) {
+			console.log(response);
+	
+			let o = new Option(response.data.descricao, response.data.codigo);
+			/// jquerify the DOM object 'o' so we can use the html method
+			$(o).html(response.data.descricao);
+			$("#codUnidade").append(o);
+			$('#criarUnidade').modal('toggle');
+			$("#unidadeDescricao").val("");
+			$('#codUnidade').val(response.data.codigo);
 		})
 		.catch(function (error) {
 			alert("Ocorreu um erro. Recarregue a pagina e tente de novo.");

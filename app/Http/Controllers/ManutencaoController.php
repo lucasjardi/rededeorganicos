@@ -68,6 +68,11 @@ class ManutencaoController extends Controller
         return Grupo::create($request->all());
     }
 
+    public function saveUnidade(Request $request)
+    {
+        return Unidade::create($request->all());
+    }
+
     public function horariosAcessoCliente()
     {
         $horariosAcesso = DB::table('horariosacesso')
