@@ -17,7 +17,7 @@
 				      <h5 class="mb-0 d-inline">
 				        <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#pedido{{$pedido->codigo}}" aria-expanded="true" aria-controls="pedido{{$pedido->codigo}}">
 				          <i class="fas fa-shopping-basket"></i> 
-				          @datetime($pedido->dataPedido) - Total de R$ @dinheiro($pedido->valor)
+				          @datetime($pedido->dataPedido) @if($model!=='produtor') - Total de R$ @dinheiro($pedido->valor) @endif
 				        </button>
 				      </h5>
 				      <span class="float-right text-secondary bg-white p-1 font-weight-bold">
@@ -31,7 +31,9 @@
                       <hr>
 				      	<p>
 							@php $subTotal = 0; @endphp
-				      		<b>Itens do Pedido:</b> <br>
+							@if($model==='produtor') <b>PRODUTOS DE <span class="text-uppercase">{{Auth::user()->name}}</span>:</b> <br>
+							@else <b>Itens do Pedido:</b> <br>
+							@endif
 					      	@foreach ($pedido->itens as $item)
 								  - {{$item->descricao}} | R$ @dinheiro($item->valorTotal) <br>
 								  @php $subTotal += $item->valorTotal; @endphp
@@ -40,8 +42,10 @@
 						  -------------------------------- 
 						<p>
 							<b>Subtotal:</b> R$ @dinheiro($subTotal) <br/>
-							@if(!!$pedido->destino->desconto)<b>Desconto:</b> {{$pedido->destino->desconto->porcentagem}}%<br/>@endif
-							<b>Total:</b> R$ @dinheiro($pedido->valor)
+							@if($model!=='produtor') 
+								@if(!!$pedido->destino->desconto)<b>Desconto:</b> {{$pedido->destino->desconto->porcentagem}}%<br/>@endif
+								<b>Total:</b> R$ @dinheiro($pedido->valor)
+							@endif
 						</p>
 				       	--------------------------------
 				       	<p><b>Destino:</b> {{$pedido->destino->descricao}}</p>
