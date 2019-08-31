@@ -8,7 +8,7 @@ class ProdutoProduzido extends Model
 {
     protected $table = 'prod_produzido';
 
-    protected $primaryKey = 'codProdutor';
+    protected $primaryKey = 'codigo';
 
     protected $fillable = [
     	'codProdutor',
@@ -26,5 +26,15 @@ class ProdutoProduzido extends Model
     public function produto()
     {
     	return $this->belongsTo('App\Produto','codProduto','codigo');
+    }
+
+    public function user()
+    {
+    	return $this->belongsTo('App\User','codProdutor','id');
+    }
+
+    public function unidade()
+    {
+    	return $this->belongsTo('App\Unidade','codUnidade','codigo');
     }
 }

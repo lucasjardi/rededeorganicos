@@ -85,3 +85,21 @@ select[readonly] {
 .hoverable:hover{
 	background-color: #eee !important;
 }
+
+#loading-general{
+    width:100vw;
+    height:100vh;
+    position: fixed;
+    top:0;
+    z-index:9200;
+    background-color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+}
+  
+#loading-general.is-visible {
+    display: flex !important;
+    visibility: visible;
+}

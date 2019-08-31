@@ -13,6 +13,7 @@ use App\Solicitacao;
 use App\StatusPedido;
 use App\User;
 use App\Desconto;
+use App\ProdutoProduzido;
 use Illuminate\Support\Facades\DB;
 
 class ManutencaoController extends Controller
@@ -86,5 +87,39 @@ class ManutencaoController extends Controller
                                     ->where('nivel_id',4)
                                     ->first();
         return view('manutencao.horariosAcessoProdutor', ['horariosAcessoProdutor' => $horariosAcesso,'isMobile' => $this->agent->isMobile()]);
+    }
+
+    public function produtosProduzidos()
+    {
+        return view('manutencao.produtosproduzidos');
+    }
+
+    public function getProdutosProduzidos()
+    {
+        return ProdutoProduzido::with('produto','produtor','user','unidade')
+            ->when(request('q'), function ($query){
+                $query->whereHas('produto', function ($query){
+                    $query->where('nome','like','%'.request('q').'%');
+                })->orWhereHas('user', function ($query){
+                    $query->where('name','like','%'.request('q').'%');
+                })->orWhereHas('unidade', function ($query){
+                    $query->where('descricao','like','%'.request('q').'%');
+                })->orWhere('valor','like','%'.request('q').'%');
+            })
+            ->when(request('sortBy'), function ($query){
+                if(request('sortBy')==='oldests'){
+                    $query->orderBy('created_at','asc');
+                } else {
+                    $query->orderBy(request('sortBy'),request('sortDirection'));
+                }
+            })
+            ->latest()->get();
+    }
+
+    public function deleteProdutosProduzidos($id)
+    {
+        $product = ProdutoProduzido::find($id);
+        $product->delete();
+        return 1;
     }
 }

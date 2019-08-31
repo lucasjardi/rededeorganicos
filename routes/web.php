@@ -55,6 +55,7 @@ Route::prefix('manutencao')->middleware('auth','isadmin')->group(function (){
     Route::get('/unidades','UnidadesController@index')->name('manutencao.unidades');
     Route::get('/unidades/{unidade}/editar','UnidadesController@edit');
     Route::get('/unidades/novo','UnidadesController@create')->name('manutencao.novo.unidade');
+    Route::get('/produtos_produzidos', 'ManutencaoController@produtosProduzidos')->name('manutencao.lista');
 });
 
 Route::resource('destinos', 'DestinosController');
@@ -99,3 +100,6 @@ Route::post('gerarRelatorio','PedidosController@relatorio');
 
 
 Route::post('gerarCSV','PedidosController@gerarCSV');
+
+Route::get('produtos_produzidos','ManutencaoController@getProdutosProduzidos');
+Route::delete('produtos_produzidos/{id}','ManutencaoController@deleteProdutosProduzidos');

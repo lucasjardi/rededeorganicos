@@ -36,6 +36,10 @@
 
 	@include('components.modals')
 
+	<div id="loading-general">
+        <h1>Carregando...</h1>
+    </div>
+
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="{{asset('js/axios.min.js')}}"></script>
 	<script src="{{asset('js/vue.min.js')}}"></script>

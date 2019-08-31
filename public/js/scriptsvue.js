@@ -126,6 +126,51 @@ Vue.component('botaoadicionar', {
   }
 });
 
+Vue.component('produtosproduzidos', {
+  data(){
+    return{
+      products: [],
+      filters: {
+        q: '',
+        sortBy: 'created_at',
+        sortDirection: 'desc'
+      }
+    }
+  },
+  mounted(){
+    this.refresh();
+  },
+  filters: {
+    date: function(value){
+      let date = new Date(value);
+      return date.getDate()+'/'+ (date.getMonth()+1) +'/'+date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();
+    }
+  },
+  methods: {
+    deleteProduct(id){
+      document.querySelector('#loading-general').classList.add("is-visible");
+      axios.delete('/produtos_produzidos/'+id)
+      .then(res=>{
+        let index = this.products.findIndex(prod=>prod.codigo==id);
+        this.products.splice(index,1);
+      })
+      .catch(error=>console.log(error))
+      .then(()=>document.querySelector('#loading-general').classList.remove("is-visible"));
+    },
+    refresh(){
+      document.querySelector('#loading-general').classList.add("is-visible");
+      axios.get('/produtos_produzidos',{params:{...this.filters}})
+      .then(res=>this.products=res.data)
+      .catch(error=>console.log(error))
+      .then(()=>document.querySelector('#loading-general').classList.remove("is-visible"));
+    },
+    clear(){
+      this.filters.q='';
+      this.refresh();
+    }
+  },
+})
+
 
 const app = new Vue({
     el: '#app',
