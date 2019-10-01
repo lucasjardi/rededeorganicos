@@ -192,8 +192,12 @@ class PedidosController extends Controller
 
     public function relatorio(Request $request)
     {
+        $dataPedidoFim = request('dataPedidoFim');
+        if(Carbon::today()->toDateString() === request('dataPedidoFim')){
+            $dataPedidoFim = $dataPedidoFim . ' 23:59:59';
+        }
         $pedidos = Pedido::with('cliente','destino','st','usuario')
-        ->whereBetween('dataPedido', [request('dataPedidoInicio'), request('dataPedidoFim')])
+        ->whereBetween('dataPedido', [request('dataPedidoInicio'), $dataPedidoFim])
         ->when(request('valorInicial')!==null, function ($query){
             $query->where('valor','>=',request('valorInicial'));
         })

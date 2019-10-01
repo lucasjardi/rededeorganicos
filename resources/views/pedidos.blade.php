@@ -17,7 +17,7 @@
 				      <h5 class="mb-0 d-inline">
 				        <button class="btn btn-link text-dark" type="button" data-toggle="collapse" data-target="#pedido{{$pedido->codigo}}" aria-expanded="true" aria-controls="pedido{{$pedido->codigo}}">
 				          <i class="fas fa-shopping-basket"></i> 
-				          @datetime($pedido->dataPedido) @if($model!=='produtor') - Total de R$ @dinheiro($pedido->valor) @endif
+				          Pedido número {{$pedido->codigo}} - <span class="text-secondary">@datetime($pedido->dataPedido)</span> @if($model!=='produtor') - Total de R$ @dinheiro($pedido->valor) @endif
 				        </button>
 				      </h5>
 				      <span class="float-right text-secondary bg-white p-1 font-weight-bold">
@@ -48,7 +48,8 @@
 							@endif
 						</p>
 				       	--------------------------------
-				       	<p><b>Destino:</b> {{$pedido->destino->descricao}}</p>
+						<p><b>Local de Entrega:</b> {{$pedido->destino->descricao}}
+						@if($model==='produtor') <br><b>Cliente:</b> {{$pedido->usuario->name}} @endif</p>
 				      </div>
 				    </div>
 			 	</div>

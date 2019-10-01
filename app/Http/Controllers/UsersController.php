@@ -217,12 +217,12 @@ class UsersController extends Controller
         $model = '';
         if($request->user()->codNivel === 5){
             $pedidos = Pedido::where('codCliente',$request->user()->id)
-                            ->with('itens','st')
+                            ->with('itens','st','usuario')
                             ->orderBy('dataPedido', false);
             $model='cliente';
         }
         if($request->user()->codNivel === 4){
-            $pedidos = Pedido::with('itens','st')->whereHas('itens', function ($query){
+            $pedidos = Pedido::with('itens','st','usuario')->whereHas('itens', function ($query){
                 $query->whereHas('produto', function ($query){
                     $query->whereHas('prod_produzido', function ($query){
                         $query->where('codProdutor',Auth::id());
