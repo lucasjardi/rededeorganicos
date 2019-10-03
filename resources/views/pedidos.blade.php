@@ -40,9 +40,10 @@
 								@php $subTotal += $item->valorTotal; @endphp
 								@else
 									@if($item->codProdutor === Auth::id())
-									- {{$item->descricao}} | R$ @dinheiro($item->valorTotal) <br>
+										- {{$item->descricao}} | R$ @dinheiro($item->valorTotal) <br>
+										@php $subTotal += $item->valorTotal; @endphp
 									@elseif($item->codProdutor === null)
-									<span class="text-secondary">- ( Sem Informação disponível... )</span>
+										<span class="text-secondary">- ( Sem Informação disponível... )</span>
 									@endif
 								@endif
 							@endforeach
