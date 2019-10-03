@@ -120,6 +120,7 @@ class UsersController extends Controller
                 ItemPedido::create([
                     'codPedido' => $pedido->codigo,
                     'codProduto' => $cesta->produto->codigo,
+                    'codProdutor' => $cesta->codProdutor,
                     'quantidade' => $cesta->quantidade,
                     'valorTotal' => $cesta->subtotal,
                     'descricao' => $descricao
@@ -225,11 +226,9 @@ class UsersController extends Controller
             $model='cliente';
         }
         if($request->user()->codNivel === 4){
-            $pedidos = Pedido::with('itens','st','usuario')->whereHas('itens', function ($query){
-                $query->whereHas('produto', function ($query){
-                    $query->whereHas('prod_produzido', function ($query){
-                        $query->where('codProdutor',Auth::id());
-                    });
+            $pedidos = Pedido::with('itens','st','usuario','itens.produtor')->whereHas('itens', function ($query){
+                $query->whereHas('produtor', function ($query){
+                    $query->where('codigo', Auth::id());
                 });
             })->whereHas('st', function ($query){
                 $query->where('descricao','Confirmado');

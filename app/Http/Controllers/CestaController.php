@@ -55,7 +55,8 @@ class CestaController extends Controller
         $formaASerVendida = Unidade::find($unidade);
 		Cesta::create([
 			'user_id' => $request->user()->id,
-			'produto_id' => $produto["produto_codigo"],
+            'produto_id' => $produto["produto_codigo"],
+            'codProdutor' => $produto["codProdutor"],
 			'quantidade' => $produto["quantidade"],
             'unidade' =>  $formaASerVendida->descricao,
 			'subtotal' => ($produto["quantidade"] * $valor)

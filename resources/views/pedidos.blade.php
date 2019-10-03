@@ -34,10 +34,18 @@
 							@if($model==='produtor') <b>PRODUTOS DE <span class="text-uppercase">{{Auth::user()->name}}</span>:</b> <br>
 							@else <b>Itens do Pedido:</b> <br>
 							@endif
-					      	@foreach ($pedido->itens as $item)
-								  - {{$item->descricao}} | R$ @dinheiro($item->valorTotal) <br>
-								  @php $subTotal += $item->valorTotal; @endphp
-					      	@endforeach
+							@foreach ($pedido->itens as $item)
+								@if($model!=='produtor')
+								- {{$item->descricao}} | R$ @dinheiro($item->valorTotal) <br>
+								@php $subTotal += $item->valorTotal; @endphp
+								@else
+									@if($item->codProdutor === Auth::id())
+									- {{$item->descricao}} | R$ @dinheiro($item->valorTotal) <br>
+									@elseif($item->codProdutor === null)
+									<span class="text-secondary">- ( Sem Informação disponível... )</span>
+									@endif
+								@endif
+							@endforeach
 				      	</p>
 						  -------------------------------- 
 						<p>

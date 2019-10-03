@@ -18,6 +18,7 @@ Vue.component('card', {
           produto_codigo: codigo, 
           quantidade: this.quantidade, 
           unidade: this.unidadeDescricao,
+          codProdutor: this.$refs.codProdutor.value,
           valor: valor
         };
       	let that = this;

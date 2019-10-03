@@ -59,6 +59,7 @@
                   @if ($produto->descricao)<b>Descrição:</b> {{$produto->descricao}}<br /> @endif
                   <b>Valor:</b> R$ @dinheiro($produto->valorpuro)
                 </p>
+                <input type="text" ref="codProdutor" value="{{$produto->codProdutor}}" style="display:none">
                 <input class="qtdProd" type="number" v-model="quantidade" style="width: 100px;" placeholder="Quantidade" min="0" {{$produto->unidade == "Kg" ? "step=0.1" : ""}} />
                 <button id="addNaCesta" 
                         @click="adicionarNaCesta({{$produto->codigo}},{{$produto->valor}})" 

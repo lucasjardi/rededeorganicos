@@ -17,7 +17,8 @@ class ItemPedido extends Model
     	'codProduto',
     	'quantidade',
     	'valorTotal',
-        'descricao'
+        'descricao',
+        'codProdutor'
     ];
 
 
@@ -29,5 +30,10 @@ class ItemPedido extends Model
     public function produto()
     {
     	return $this->belongsTo('App\Produto','codProduto','codigo');
+    }
+
+    public function produtor()
+    {
+    	return $this->belongsTo('App\Produtor','codProdutor','codigo');
     }
 }

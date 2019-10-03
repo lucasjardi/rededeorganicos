@@ -13,7 +13,8 @@ class Cesta extends Model
     	'produto_id',
         'quantidade',
         'unidade',
-        'subtotal'
+        'subtotal',
+        'codProdutor'
     ];
 
     public function user()
