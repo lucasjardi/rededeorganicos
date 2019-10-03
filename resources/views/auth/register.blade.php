@@ -72,6 +72,28 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="cidade">Cidade: </label>
+                        <div class="col-sm-10">
+                            <select id="cidade" name="codCidade" class="form-control">
+                                @foreach (App\Cidade::all() as $cidade)
+                                    <option value="{{$cidade->codigo}}">{{$cidade->descricao}}</option>                                    
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="telefone">Telefone:</label>
+                            <div class="col-sm-10">
+                                <input id="telefone" type="text" class="form-control" name="telefone" required>
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="endereco">Endereço:</label>
+                            <div class="col-sm-10">
+                                <input id="endereco" type="text" class="form-control" name="endereco" required>
+                            </div>
+                    </div>
                     <button class="btn btn-primary w-100" type="submit">Solicitar Cadastro</button>
                 </form>
 

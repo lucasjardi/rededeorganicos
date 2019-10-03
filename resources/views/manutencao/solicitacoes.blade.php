@@ -16,6 +16,8 @@
           <th scope="col">#</th>
           <th scope="col">Nome</th>
           <th scope="col">E-mail</th>
+          <th scope="col">Telefone</th>
+          <th scope="col">Endereço</th>
           <th scope="col">Tipo de Cadastro</th>
           <th class="text-right">Ações</th>
         </thead>
@@ -26,6 +28,8 @@
               <th scope="row">{{ $solicitacao->codigo }}</th>
               <td>{{ $solicitacao->name }}</td>
               <td>{{ $solicitacao->email }}</td>
+              <td>{{ $solicitacao->telefone }}</td>
+              <td>{{ $solicitacao->endereco }}</td>
               <td>{{ $solicitacao->nivel == 4 ? "Produtor" : "Cliente" }}</td>
               <td class="text-right">
                 <a href="{{ url('solicitacao/' . $solicitacao->codigo . '/aceitar') }}">

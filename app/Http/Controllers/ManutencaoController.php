@@ -48,7 +48,7 @@ class ManutencaoController extends Controller
 
     public function solicitacoes()
     {
-        $solicitacoes = Solicitacao::all();
+        $solicitacoes = Solicitacao::latest()->get();
         return view('manutencao.solicitacoes')->with(['solicitacoes' => $solicitacoes, 'isMobile' => $this->agent->isMobile()]);
     }
 

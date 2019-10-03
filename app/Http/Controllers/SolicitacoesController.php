@@ -26,18 +26,18 @@ class SolicitacoesController extends Controller
     		Produtor::create([
     			'codigo' => $user->id,
     			'codCertificado' => 1,
-    			'codCidade' => 1,
-    			'telefone' => "",
-    			'endereco' => ""
+    			'codCidade' => $solicitacao->codCidade,
+    			'telefone' => $solicitacao->telefone,
+    			'endereco' => $solicitacao->endereco
     		]);
     	}
 
     	if ($solicitacao->nivel == 5) {
     		Cliente::create([
     			'codigo' => $user->id,
-                'codCidade' => 1,
-    			'telefone' => "",
-    			'endereco' => "",
+                'codCidade' => $solicitacao->codCidade,
+    			'telefone' => $solicitacao->telefone,
+    			'endereco' => $solicitacao->endereco,
     			'cpf' => ""
     		]);
     	}

@@ -144,7 +144,10 @@ class UsersController extends Controller
     		'name' => 'required',
     		'email' => 'required|email|unique:users',
         	'password' => 'required|string|min:6|confirmed',
-        	'nivel' => 'required'
+            'nivel' => 'required',
+            'codCidade' => 'required',
+            'telefone' => 'required',
+            'endereco' => 'required'
         ]);
 
     	$solicitacao = Solicitacao::create($request->all());

@@ -17,6 +17,9 @@ class Solicitacao extends Model
     	'name',
     	'email',
     	'password',
-    	'nivel'
+        'nivel',
+        'codCidade',
+        'telefone',
+        'endereco'
     ];
 }
