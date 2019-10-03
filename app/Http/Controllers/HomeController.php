@@ -80,7 +80,7 @@ class HomeController extends Controller
 
             $preencherInformacoes = false;
 
-            if($cliente->cpf == "" && $cliente->endereco=="" && $cliente->telefone=="")
+            if($cliente->cpf == "" || $cliente->endereco=="" || $cliente->telefone=="")
                 $preencherInformacoes = true;
 
             $locaisDeRetirada = Destino::all();
