@@ -41,6 +41,7 @@ Route::prefix('manutencao')->middleware('auth','isadmin')->group(function (){
     Route::get('/destinos','DestinosController@index')->name('manutencao.locais');
     Route::get('/destinos/novo','DestinosController@create')->name('manutencao.novo.local');
     Route::get('/destinos/{destino}/editar','DestinosController@edit');
+    Route::get('/destinos/{destino}/visibility','DestinosController@visibility');
     Route::get('/descontos','DescontosController@index')->name('manutencao.descontos');
     Route::get('/desconto/novo','DescontosController@create')->name('manutencao.novo.desconto');
     Route::get('/desconto/{desconto}/editar','DescontosController@edit');

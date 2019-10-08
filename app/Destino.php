@@ -14,7 +14,8 @@ class Destino extends Model
 
     protected $fillable = [
     	'descricao',
-    	'acrescimo'
+        'acrescimo',
+        'visibility'
     ];
 
     public static function allAsArray()

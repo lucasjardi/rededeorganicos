@@ -43,6 +43,10 @@
               <td>{{ $destino->descricao }}</td>
               {{-- <td>{{ $destino->acrescimo }}</td> --}}
               <td class="text-right">
+                <a href="{{ url('manutencao/destinos/' . $destino->codigo . '/visibility') }}">
+                  @if($destino->visibility === 1) <i class="fa fa-eye text-success"></i>
+                  @else <i class="fa fa-eye-slash text-success"></i> @endif
+                </a>&nbsp;
                 <a href="{{ url('manutencao/local/' . $destino->codigo . '/editar') }}">
                   <i class="fa fa-edit text-primary"></i>
                 </a>&nbsp;

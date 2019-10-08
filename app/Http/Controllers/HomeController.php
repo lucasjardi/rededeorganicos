@@ -83,7 +83,7 @@ class HomeController extends Controller
             if($cliente->cpf == "" || $cliente->endereco=="" || $cliente->telefone=="")
                 $preencherInformacoes = true;
 
-            $locaisDeRetirada = Destino::all();
+            $locaisDeRetirada = Destino::where('visibility',1)->get();
             
 
             return view('cliente')

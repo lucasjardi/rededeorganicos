@@ -93,4 +93,11 @@ class DestinosController extends Controller
             return view('cliente')->with(['produtos' => $produtos, 'destino' => $destinoNome]);
         }
     }
+
+    public function visibility(Destino $destino)
+    {
+        $destino->visibility = !$destino->visibility;
+        $destino->save();
+        return back();
+    }
 }
