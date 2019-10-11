@@ -81,12 +81,19 @@
 
     @isset($pedidos)
     <div class="row justify-content-end">
-        <div class="col-3">
+        {{-- <div class="col-3">
                 <form action="{{url('gerarCSV')}}" method="POST">
                     @csrf
                     <input type="hidden" name="pedidos" value="{{ json_encode($pedidos) }}">
                     <button class="btn btn-outline-primary btn-block" type="submit">Gerar CSV</button>
                 </form>
+        </div> --}}
+        <div class="col-3">
+            <form action="{{url('imprimir_pedidos')}}" method="POST" target="_blank">
+                @csrf
+                <input type="hidden" name="pedidos" value="{{ json_encode($pedidos) }}">
+                <button class="btn btn-outline-primary btn-block" type="submit"><i class="fa fa-print"></i> Imprimir Pedidos</button>
+            </form>
         </div>
     </div>
     <div class="row p-4">

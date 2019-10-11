@@ -41,6 +41,9 @@
                 </span>
               </td>
               <td class="text-right">
+                <a href="{{ url('pedido/' . $pedido->codigo . '/imprimir') }}" target="_blank">
+                  <i class="fa fa-print text-secondary"></i>
+                </a>&nbsp;
                 <a href="{{ url('manutencao/pedido/' . $pedido->codigo . '/editar') }}">
                   <i class="fa fa-edit text-primary"></i>
                 </a>&nbsp;

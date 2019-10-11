@@ -122,4 +122,23 @@ class ManutencaoController extends Controller
         $product->delete();
         return 1;
     }
+
+    public function imprimirPedido(Request $request, Pedido $pedido)
+    {
+        $pedido->load('usuario','cliente.cidade','destino','itens','st');
+        return view('imprimir_pedido', ['pedidos' => [$pedido]]);
+    }
+
+    public function imprimirPedidos(Request $request)
+    {
+        $pedidosJson = json_decode($request->pedidos, true);
+        
+        $pedidosIds = [];
+        foreach($pedidosJson as $key => $pedido){
+            array_push($pedidosIds, $pedido['codigo']);
+        }
+
+        $pedidos = Pedido::with('usuario','cliente.cidade','destino','itens','st')->whereIn('codigo', $pedidosIds)->get();
+        return view('imprimir_pedido', ['pedidos' => $pedidos]);
+    }
 }

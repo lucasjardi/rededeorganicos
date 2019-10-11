@@ -104,3 +104,6 @@ Route::post('gerarCSV','PedidosController@gerarCSV');
 
 Route::get('produtos_produzidos','ManutencaoController@getProdutosProduzidos');
 Route::delete('produtos_produzidos/{id}','ManutencaoController@deleteProdutosProduzidos');
+
+Route::get('pedido/{pedido}/imprimir','ManutencaoController@imprimirPedido');
+Route::post('imprimir_pedidos','ManutencaoController@imprimirPedidos');
