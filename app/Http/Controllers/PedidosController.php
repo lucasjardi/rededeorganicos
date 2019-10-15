@@ -47,7 +47,7 @@ class PedidosController extends Controller
     public function create($pedido=null)
     {
         // $ped = Pedido::with('itens','usuario')->find($pedido->codigo);
-        if(!!$pedido) $pedido->load('itens','usuario');
+        if(!!$pedido) $pedido->load('itens.user','usuario');
 
         return view('manutencao.pedidos.form',[
             'pedido' => $pedido, 

@@ -102,6 +102,14 @@
 
             <div class="col">
               <div class="form-group">
+                <label>Produtor: </label>
+                <input class="form-control" id="produtorItem">
+                <input type="hidden" name="codProdutor" id="codProdutor">
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="form-group">
                 <button type="submit" class="btn btn-primary form-control" style="margin-top: 20px !important">Adicionar</button>
               </div>
             </div>
@@ -115,6 +123,7 @@
           <th scope="col">quantidade</th>
           <th scope="col">valor total (R$)</th>
           <th scope="col">descrição</th>
+          <th scope="col">Produtor</th>
           <th>Ações</th>
         </thead>      
         <tbody>
@@ -125,6 +134,7 @@
                   <td>{{ $item->quantidade }}</td>
                   <td>@dinheiro($item->valorTotal)</td>
                   <td>{{ $item->descricao }}</td>
+                  <td>{{ @$item->user ? $item->user->name : '(Não definido)' }}</td>
                   <td>
                       <a href="{{url('/itempedido/'.$item->codigo)}}"><i class="fa fa-times text-danger"></i></a>
                   </td>

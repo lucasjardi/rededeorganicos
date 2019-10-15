@@ -28,6 +28,13 @@ $(function () {
 		}
 	});
 
+	$("#produtorItem" ).autocomplete({
+		source: "/produtoresAutoComplete",
+		select: function( event, ui ) {
+			$("#codProdutor").val(ui.item.id);
+		}
+	});
+
 	if ($(window).width() < 768) {
 	    // do something for small screens
 	    $("#produtos").addClass("table-responsive");

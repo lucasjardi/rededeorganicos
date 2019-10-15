@@ -36,4 +36,9 @@ class ItemPedido extends Model
     {
     	return $this->belongsTo('App\Produtor','codProdutor','codigo');
     }
+
+    public function user()
+    {
+    	return $this->belongsTo('App\User','codProdutor','id');
+    }
 }

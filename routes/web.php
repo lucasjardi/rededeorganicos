@@ -90,6 +90,7 @@ Route::post('/save-unidade-only','ManutencaoController@saveUnidade');
 
 Route::get('/clientesAutoComplete','UsersController@getClientes');
 Route::get('/produtosAutoComplete','ProdutosController@pesquisaPorNome');
+Route::get('/produtoresAutoComplete','UsersController@getProdutores');
 
 Route::view('forbidden','forbidden');
 

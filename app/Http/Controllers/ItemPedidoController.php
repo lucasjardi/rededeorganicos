@@ -18,6 +18,7 @@ class ItemPedidoController extends Controller
             "codProduto" => "required|numeric",
             "quantidade" => "required|numeric",
             "valorTotal" => "required|numeric",
+            "codProdutor" => "required|numeric",
             "unidade" =>  "required"
         ]);
 

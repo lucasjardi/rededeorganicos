@@ -254,4 +254,18 @@ class UsersController extends Controller
         }
         return $clients;
     }
+
+    public function getProdutores()
+    {
+        $term = $_GET['term'];
+        $produtores = User::where('codNivel',4)->where('name','like','%'.$term.'%')->get();
+        $produtoresNome = array();
+        $produtoresResponse = array();
+        foreach ($produtores as $produtor){
+            $produtoresNome["id"] = $produtor->id;
+            $produtoresNome["value"] = $produtor->name;
+            array_push($produtoresResponse, $produtoresNome);
+        }
+        return $produtoresResponse;
+    }
 }
