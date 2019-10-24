@@ -20,7 +20,8 @@ class Pedido extends Model
     	'codDestino',
     	'dataPedido',
     	'valor',
-        'status'
+        'status',
+        'descricao'
     ];
 
     protected $dates = [

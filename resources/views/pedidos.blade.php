@@ -59,6 +59,8 @@
 				       	--------------------------------
 						<p><b>Local de Entrega:</b> {{$pedido->destino->descricao}}
 						@if($model==='produtor') <br><b>Cliente:</b> {{$pedido->usuario->name}} @endif</p>
+						--------------------------------
+						<p><b>Observações:</b> {{$pedido->descricao}}
 				      </div>
 				    </div>
 			 	</div>

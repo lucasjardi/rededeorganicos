@@ -110,7 +110,8 @@ class UsersController extends Controller
             'codCliente' => $request->user()->id,
             'codDestino' => $request->local_de_retirada,
             'dataPedido' => Carbon::now(),
-            'valor' => $request->total
+            'valor' => $request->total,
+            'descricao' => $request->descricao
         ]);
 
         if($pedido->save()){ // se salvou o pedido, salva os itens do pedido

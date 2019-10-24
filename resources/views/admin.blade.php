@@ -35,7 +35,11 @@
 							@if(!!$pedido->destino->desconto)<b>Desconto:</b> {{$pedido->destino->desconto->porcentagem}}%<br/>@endif
 							<b>Total:</b> R$ @dinheiro($pedido->valor)
 						</p>
-				      	--------------------------------
+						  --------------------------------
+						<p>
+							<b>Observações:</b> {{$pedido->descricao}} <br>
+						</p>
+						--------------------------------
 				       	<p>
 				       		<b>Solicitado por:</b> {{$pedido->usuario->name}} <br>
 				       		<b>CPF:</b> {{$pedido->cliente->cpf}} <br>

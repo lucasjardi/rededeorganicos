@@ -20,6 +20,7 @@
     <b>Valor Total:</b> R$ @dinheiro($pedido->valor) <br>
     <b>Local de entrega:</b> {{$pedido->destino->descricao}} <br>
     <b>Data de processamento:</b> @datetime($pedido->dataPedido) <br>
+    <b>Observações:</b> {{$pedido->descricao}} <br>
   </p>
   <hr>
   <div class="alert alert-primary">

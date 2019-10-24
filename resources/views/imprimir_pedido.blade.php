@@ -74,6 +74,7 @@
                     <tr><td colspan="3">Subtotal: R$ @dinheiro($subTotal)</td></tr>
                     @if($subTotal > $pedido->valor) <tr><td colspan="3">Descontos: R$ @dinheiro($subTotal - $pedido->valor)</td></tr> @endif
                     <tr><th colspan="3" style="background: #eee">Total: R$ @dinheiro($pedido->valor)</th></tr>
+                    <tr><td colspan="3">Observações: {{$pedido->descricao}}</td></tr>
                     <tr><td colspan="3" style="text-align: right;color:#363636">Emitido em: {{date('d/m/Y H:i:s')}}</td></tr>
                 </tbody>
             </table>

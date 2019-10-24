@@ -58,9 +58,14 @@
       <b>Subtotal:</b> R$ {{number_format($subtotal, 2, ',', '.')}} <br>
       @if($desconto>0)<b>Desconto:</b> R$ {{number_format($desconto, 2, ',', '.')}}<br>@endif
       <h4><b>Total:</b>&nbsp;R$ {{number_format($total, 2, ',', '.')}}</h4>
+      <br>
 
       <form action="/solicitarPedido" method="POST">
         @csrf
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Observações (opcional)</label>
+          <textarea name="descricao" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Deixe aqui sua observação"></textarea>
+        </div>
         <input type="hidden" name="local_de_retirada" value="{{$destino->codigo}}">
         <input type="hidden" name="total" value="{{$total}}">
         <button class="btn btn-success" type="submit">Solicitar Pedido</button>
