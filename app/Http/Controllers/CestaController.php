@@ -49,7 +49,7 @@ class CestaController extends Controller
     {
     	$produto = $request->json('produto');
     	$prod = Produto::findOrFail($produto["produto_codigo"]);
-        $unidade = ProdutoProduzido::where('codProduto',$produto["produto_codigo"])->pluck('codUnidade')->first();
+        $unidade = ProdutoProduzido::where('codProduto',$produto["produto_codigo"])->where('codProdutor',$produto["codProdutor"])->pluck('codUnidade')->first();
         // $valor = ProdutoProduzido::where('codProduto',$produto["produto_codigo"])->pluck('valor')->first();
         $valor = $produto["valor"];
         $formaASerVendida = Unidade::find($unidade);

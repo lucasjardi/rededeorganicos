@@ -28,8 +28,8 @@ class ProdutorProduzController extends Controller
         $produtorProduzObject = ProdutorProduz::where('codProdutor', $request->user()->id)->where('codProduto', $codProduto);
         if ( $produtorProduzObject->exists() ) {
             $produtorProduzObject->delete();
-            ValorUltimaSemana::where('codProduto', $codProduto)->delete();
-            ProdutoProduzido::where('codProduto', $codProduto)->delete();
+            ValorUltimaSemana::where('codProduto', $codProduto)->where('codProdutor', $request->user()->id)->delete();
+            ProdutoProduzido::where('codProduto', $codProduto)->where('codProdutor', $request->user()->id)->delete();
     		return redirect('/');
     	}
     }
