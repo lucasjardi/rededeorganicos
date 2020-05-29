@@ -68,12 +68,12 @@
                     </tr>
                     @php $subTotal = 0; @endphp
                     @foreach ($pedido->itens as $item)
-                        <tr><td colspan="3">{{$item->descricao}} - R$ @dinheiro($item->valorTotal)</td></tr>
+                        <tr><td colspan="3">{{$item->descricao}} - (Produtor: {{@$item->produtor->usuario->name}}) <span style="float: right">R$ @dinheiro($item->valorTotal)</span></td></tr>
                         @php $subTotal += $item->valorTotal; @endphp
                     @endforeach
-                    <tr><td colspan="3">Subtotal: R$ @dinheiro($subTotal)</td></tr>
-                    @if($subTotal > $pedido->valor) <tr><td colspan="3">Descontos: R$ @dinheiro($subTotal - $pedido->valor)</td></tr> @endif
-                    <tr><th colspan="3" style="background: #eee">Total: R$ @dinheiro($pedido->valor)</th></tr>
+                    <tr><td colspan="3">Subtotal: <span style="float: right">R$ @dinheiro($subTotal)</span></td></tr>
+                    @if($subTotal > $pedido->valor) <tr><td colspan="3">Descontos: <span style="float: right">R$ @dinheiro($subTotal - $pedido->valor)</span></td></tr> @endif
+                    <tr><th colspan="3" style="background: #eee">Total: <span style="float: right">R$ @dinheiro($pedido->valor)</span></th></tr>
                     <tr><td colspan="3">Observações: {{$pedido->descricao}}</td></tr>
                     <tr><td colspan="3" style="text-align: right;color:#363636">Emitido em: {{date('d/m/Y H:i:s')}}</td></tr>
                 </tbody>

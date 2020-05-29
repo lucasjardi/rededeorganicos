@@ -26,7 +26,6 @@
 
         <tbody>
           @foreach ($pedidos as $pedido)
-          <script>console.log("{{$pedido->st->descricao}}")</script>
             <tr>
               <th scope="row">{{ $pedido->codigo }}</th>
               <td>{{ $pedido->usuario->name }}</td>
