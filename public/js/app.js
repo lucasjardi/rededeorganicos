@@ -51,6 +51,17 @@ $(function () {
 	    // do something for huge screens
 	    $("#produtos").removeClass("table-responsive");
 	}
+
+	const url = new URL(location.href);
+	if (url.searchParams.has('sortBy') && url.searchParams.has('sortDirection')) {
+		if (url.searchParams.get('sortDirection') === 'asc') {
+			document.getElementById(url.searchParams.get('sortBy')).children[0].classList = 'fas fa-sort-up';
+		}
+
+		if (url.searchParams.get('sortDirection') === 'desc') {
+			document.getElementById(url.searchParams.get('sortBy')).children[0].classList = 'fas fa-sort-down';
+		}
+	}
 });
 
 $("#addNaCesta").click(function() {
@@ -169,4 +180,56 @@ function showDetails(object) {
 
 function closeModalDetails() {
 	document.querySelector('#modalInfoParagraph').innerHTML='';
+}
+
+function orderBy(type, $event) {
+	const sortIconClass = $event.children[0].classList[1];
+	let orderDirection = '';
+	
+	if (sortIconClass === 'fa-sort') {
+		$event.children[0].classList = 'fas fa-sort-down';
+		orderDirection = 'desc';
+	}
+
+	if (sortIconClass === 'fa-sort-down') {
+		$event.children[0].classList = 'fas fa-sort-up';
+		orderDirection = 'asc';
+	}
+
+	if (sortIconClass === 'fa-sort-up') {
+		$event.children[0].classList = 'fas fa-sort';
+		type = undefined;
+		orderDirection = undefined;
+	}
+
+	let url = new URL(location.href);
+	if (!!type && !!orderDirection) {
+		url.searchParams.set('sortBy', type);
+		url.searchParams.set('sortDirection', orderDirection);
+	} else {
+		url.searchParams.delete('sortBy');
+		url.searchParams.delete('sortDirection');
+	}
+
+	location.href = url.href;
+}
+
+function search(e) {
+	const url = new URL(location.href);
+
+	if (!e) {
+		document.getElementById('search').value = '';
+		url.searchParams.delete('search');
+		url.searchParams.delete('sortBy');
+		url.searchParams.delete('sortDirection');
+		location.href = url.href;
+	} else if (e.keyCode === 13) {
+		if (!!document.getElementById('search').value) {
+			url.searchParams.set('search', document.getElementById('search').value);
+		} else {
+			url.searchParams.delete('search');
+		
+		}
+		location.href = url.href;
+	}
 }

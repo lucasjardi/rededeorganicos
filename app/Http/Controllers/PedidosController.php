@@ -35,8 +35,25 @@ class PedidosController extends Controller
      */
     public function index()
     {
-        $pedidos = Pedido::with('usuario','destino','st')->orderBy('dataPedido',false)->get();
-    	return view('manutencao.pedidos.index')->with(['pedidos' => $pedidos, 'isMobile' => $this->agent->isMobile()]);
+        $pedidos = Pedido::with('usuario','destino','st')
+            ->when(request('search'), function($query) {
+                $query->whereHas('usuario', function ($query) {
+                    $query->where('name','like','%'.request('search').'%');
+                })->orWhere('dataPedido','like','%'.join(array_reverse(explode('/',request('search'))), '-').'%')
+                ->orWhere('valor','like','%'.request('search').'%')
+                ->orWhere('codigo','like','%'.request('search').'%');
+            })
+            ->when(request('sortBy'), function ($query) {
+               $query->orderBy(request('sortBy'), request('sortDirection'));
+            }, function ($query) {
+                $query->orderBy('dataPedido', false);
+            })->paginate();
+
+        return view('manutencao.pedidos.index-v2')
+            ->with([
+                'pedidos' => $pedidos,  
+                'isMobile' => $this->agent->isMobile()
+            ]);
     }
 
     /**
