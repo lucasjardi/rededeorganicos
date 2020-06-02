@@ -222,7 +222,7 @@ class UsersController extends Controller
         $model = '';
         if($request->user()->codNivel === 5){
             $pedidos = Pedido::where('codCliente',$request->user()->id)
-                            ->with('itens','st','usuario')
+                            ->with('itens.produtor.usuario:id,name','st','usuario')
                             ->orderBy('dataPedido', false);
             $model='cliente';
         }

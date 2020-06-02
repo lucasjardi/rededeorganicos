@@ -55,6 +55,15 @@
                 </div>
             </div>
             <div class="col">
+                <div class="form-group">
+                        <select id="produtores" class="selectpicker form-control" multiple data-live-search="true" data-title="Produtores" name="produtores[]">
+                            @foreach ($produtores as $index => $produtor)
+                                <option value="{{$produtor->codigo}}" {{ null !== old("produtores") && in_array($produtor->codigo,old("produtores")) ? "selected" : "" }}>{{$produtor->usuario->name}}</option>  
+                            @endforeach
+                        </select>
+                </div>
+            </div>
+            <div class="col">
                     <div class="form-group">
                         <select class="selectpicker form-control" multiple data-live-search="true" data-title="Locais de entrega" name="destinos[]">
                             @foreach ($destinos as $destino)
@@ -94,6 +103,24 @@
                 <input type="hidden" name="pedidos" value="{{ json_encode($pedidos) }}">
                 <button class="btn btn-outline-primary btn-block" type="submit"><i class="fa fa-print"></i> Imprimir Pedidos</button>
             </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                  <b>{{$countPedidos}}</b>
+                  @if($countPedidos > 1)<span>Pedidos</span>
+                  @else<span>Pedidos</span>@endif no Período
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                  Valor Total no Período: <span class="text-success font-weight-bold">R$ @dinheiro($valorTotalPeriodo)</span>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row p-4">

@@ -37,19 +37,19 @@ $(function () {
 
 	if ($(window).width() < 768) {
 	    // do something for small screens
-	    $("#produtos").addClass("table-responsive");
+	    $("#produtos, #pedidos").addClass("table-responsive");
 	}
 	else if ($(window).width() >= 768 &&  $(window).width() <= 992) {
 	    // do something for medium screens
-	    $("#produtos").addClass("table-responsive");
+	    $("#produtos, #pedidos").addClass("table-responsive");
 	}
 	else if ($(window).width() > 992 &&  $(window).width() <= 1200) {
 	    // do something for big screens
-	    $("#produtos").removeClass("table-responsive");
+	    $("#produtos, #pedidos").removeClass("table-responsive");
 	}
 	else  {
 	    // do something for huge screens
-	    $("#produtos").removeClass("table-responsive");
+	    $("#produtos, #pedidos").removeClass("table-responsive");
 	}
 
 	const url = new URL(location.href);
@@ -230,6 +230,16 @@ function search(e) {
 			url.searchParams.delete('search');
 		
 		}
+		location.href = url.href;
+	}
+}
+
+function searchForProducts(e) {
+	if (e.keyCode === 13) {
+		const url = new URL(location.href);
+		url.searchParams.set('search',  $('#searchProducts').val());
+		url.searchParams.set('grupos', $('#grupos').val());
+
 		location.href = url.href;
 	}
 }

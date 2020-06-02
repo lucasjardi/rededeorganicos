@@ -36,7 +36,7 @@
 							@endif
 							@foreach ($pedido->itens as $item)
 								@if($model!=='produtor')
-								- {{$item->descricao}} | R$ @dinheiro($item->valorTotal) <br>
+								- {{$item->descricao}} (Produtor: {{@$item->produtor->usuario->name}}) | R$ @dinheiro($item->valorTotal) <br>
 								@php $subTotal += $item->valorTotal; @endphp
 								@else
 									@if($item->codProdutor === Auth::id())

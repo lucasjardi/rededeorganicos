@@ -19,7 +19,7 @@
         <input type="text" class="input" placeholder="Pesquisar" id="search" name="search" value="{{Request::get('search')}}" onkeydown="search(event)" />
         <button onclick="search()" style="border: none; background: none;cursor: pointer;"><i class="fa fa-times text-danger"></i></button>
       </div>
-      <table class="table table-striped table-hover">
+      <table id="pedidos" class="table table-striped table-hover">
         <thead class="thead-dark">
           <th scope="col">#</th>
           <th scope="col">Cliente</th>

@@ -17,6 +17,7 @@ use App\StatusPedido;
 use Auth;
 use Jenssegers\Agent\Agent;
 use App\Cliente;
+use App\Produtor;
 
 class PedidosController extends Controller
 {
@@ -202,6 +203,7 @@ class PedidosController extends Controller
     {
         return view('relatorios', [
             'clientes' => Cliente::with('usuario')->get(),
+            'produtores' => Produtor::with('usuario')->get(),
             'destinos' => Destino::all(),
             'statuses' => StatusPedido::all()
         ]);
@@ -224,19 +226,26 @@ class PedidosController extends Controller
         ->when(request('clientes'), function ($query){
             $query->whereIn('codCliente',request('clientes'));
         })
+        ->when(request('produtores'), function ($query){
+            $query->whereHas('itens', function ($query) {
+                $query->whereIn('codProdutor',request('produtores'));
+            });
+        })
         ->when(request('destinos'), function ($query){
             $query->whereIn('codDestino',request('destinos'));
         })
         ->when(request('statuses'), function ($query){
             $query->whereIn('status',request('statuses'));
-        })
-        ->get();
+        });
 
         $request->flash();
 
         return view('relatorios', [
-            'pedidos'=>$pedidos,
+            'pedidos'=>$pedidos->get(),
+            'valorTotalPeriodo' => $pedidos->sum('valor'),
+            'countPedidos' => $pedidos->count(),
             'clientes' => Cliente::with('usuario')->get(),
+            'produtores' => Produtor::with('usuario')->get(),
             'destinos' => Destino::all(),
             'statuses' => StatusPedido::all()
         ]);

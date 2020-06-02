@@ -39,6 +39,46 @@
     @endif
   </div>
 
+  @if(Session::has('localSelected'))
+  <div class="bg-white p-3 mb-3">
+  <div class="row">
+      <div class="col" style="flex: 1;display: flex;align-items: center;margin-left: 1.5rem;padding: 0">
+        <i class="fas fa-filter"></i>
+        <span style="margin-left: 8px">FILTROS</span>
+      </div>
+      <div style="display: flex;justify-content: flex-end;margin-right: 1.5rem;">
+        <div style="width: 200px;margin-right: 8px;margin-left: 1.5rem">
+          <div class="form-group" style="border: 1px solid #ced4da;border-radius: .25rem;margin-bottom: 0">
+            <select id="grupos" class="selectpicker form-control" multiple data-live-search="true" data-title="Categoria" name="grupos[]">
+                @foreach ($grupos as $index => $grupo)
+                  <option value="{{$grupo->codigo}}"
+                    {{ null !== \Request::get('grupos') && in_array($grupo->codigo,explode(',', \Request::get('grupos'))) ? "selected" : "" }}>
+                    {{$grupo->descricao}}</option>  
+                @endforeach
+            </select>
+          </div>
+        </div>
+        <div style="margin-right: 8px">
+          <input id="searchProducts"
+                 type="text"
+                 class="form-control"
+                 placeholder="Nome"
+                 onkeydown="searchForProducts(event)"
+                 value="{{\Request::get('search')}}">
+        </div>
+        <div>
+          <button onclick="searchForProducts({keyCode: 13})" class="btn btn-primary">Filtrar</button>
+        </div>
+        @if (!!\Request::get('grupos') || !!\Request::get('search'))
+          <div style="display: flex;align-items: center">
+            <a class="text-dark" style="margin-left: 8px; cursor: pointer" onclick="location.href='/'"><i class="fas fa-times"></i> Limpar Filtros</a>
+          </div>
+        @endif
+      </div>
+    </div>
+  </div>
+  @endif
+
   @isset ($produtos)
     <div class="accordion" id="accordionExample">
         @forelse ($produtos as $produto)
@@ -72,7 +112,7 @@
           </div>
         </card>
         @empty
-          <h5>Não há produtos ainda...</h5>
+          <h5>Nenhum produto encontrado.</h5>
         @endforelse   
       </div>
   @endisset

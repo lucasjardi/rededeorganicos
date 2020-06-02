@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Destino;
+use App\Grupo;
 use Auth;
 use Illuminate\Support\Facades\DB;
 use Jenssegers\Agent\Agent;
@@ -84,6 +85,13 @@ class DestinosController extends Controller
                     ->join('destino', 'destino.codigo', '=', DB::raw($request->destino))
                     ->select('produto.codigo','produto.nome','produto.descricao','unidade.descricao AS unidade','prod_produzido.valor as valorpuro','destino.acrescimo', DB::raw("prod_produzido.valor AS valor"),'prod_produzido.codigo as prod_produzido_codigo','prod_produzido.codProdutor')
                     ->where('produto.ativo',1)
+                    ->when(request('search'), function($query) {
+                        $query->where('produto.nome','like','%'.request('search').'%')
+                            ->orWhere('prod_produzido.valor','like','%'.request('search').'%');
+                    })
+                    ->when(request('grupos'), function ($query) {
+                        $query->whereIn('produto.codGrupo', explode(',',request('grupos')));
+                    })
                     ->orderBy('produto.nome')
                     ->get();
 
@@ -91,7 +99,7 @@ class DestinosController extends Controller
             $destinoNome = $destino->descricao;
             $request->session()->put('localSelected',$request->destino);
 
-            return view('cliente')->with(['produtos' => $produtos, 'destino' => $destinoNome]);
+            return view('cliente')->with(['produtos' => $produtos, 'destino' => $destinoNome, 'grupos' => Grupo::all()]);
         }
     }
 
