@@ -46,7 +46,7 @@
         <i class="fas fa-filter"></i>
         <span style="margin-left: 8px">FILTROS</span>
       </div>
-      <div style="display: flex;justify-content: flex-end;margin-right: 1.5rem;">
+      <div style="display: flex;justify-content: flex-end;margin-right: 1.5rem;max-width: -webkit-fill-available;">
         <div style="width: 200px;margin-right: 8px;margin-left: 1.5rem">
           <div class="form-group" style="border: 1px solid #ced4da;border-radius: .25rem;margin-bottom: 0">
             <select id="grupos" class="selectpicker form-control" multiple data-live-search="true" data-title="Categoria" name="grupos[]">
@@ -71,7 +71,7 @@
         </div>
         @if (!!\Request::get('grupos') || !!\Request::get('search'))
           <div style="display: flex;align-items: center">
-            <a class="text-dark" style="margin-left: 8px; cursor: pointer" onclick="location.href='/'"><i class="fas fa-times"></i> Limpar Filtros</a>
+            <a class="text-danger" style="margin-left: 8px; cursor: pointer" onclick="location.href='/'" title="LIMPAR FILTROS"><i class="fas fa-times"></i></a>
           </div>
         @endif
       </div>
@@ -86,9 +86,9 @@
           <div class="card">
             <div class="card-header bg-white" id="headingOne">
               <h5 class="mb-0 d-inline">
-                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#produto{{$produto->prod_produzido_codigo}}" aria-expanded="true" aria-controls="produto{{$produto->prod_produzido_codigo}}">
-                  <i class="fas fa-shopping-basket"></i> 
-                  {{$produto->nome}} <span class="badge badge-success badge-pill">R$ @dinheiro($produto->valor)/{{$produto->unidade}}</span>
+                <button class="btn btn-link text-left" type="button" data-toggle="collapse" data-target="#produto{{$produto->prod_produzido_codigo}}" aria-expanded="true" aria-controls="produto{{$produto->prod_produzido_codigo}}">
+                  <span style="white-space: pre-wrap;text-align: left;"><i class="fas fa-shopping-basket" style="margin-right: 8px;"></i>{{$produto->nome}}</span>
+                  <span style="margin-left: 8px" class="badge badge-success badge-pill">R$ @dinheiro($produto->valor)/{{$produto->unidade}}</span>
                 </button>
               </h5>
             </div>
