@@ -2,6 +2,6 @@
 
 Na pasta do projeto, rodar os comandos:
 
-composer install
-php artisan key:generate
-php artisan storage:link
+- composer install
+- php artisan key:generate
+- php artisan storage:link
