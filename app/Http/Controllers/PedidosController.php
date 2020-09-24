@@ -185,6 +185,7 @@ class PedidosController extends Controller
     {
         return view('relatorios', [
             'clientes' => Cliente::with('usuario')->get(),
+           
             'destinos' => Destino::all(),
             'statuses' => StatusPedido::all()
         ]);
