@@ -100,6 +100,12 @@ Route::patch('horarioacessoprodutor','HorariosAcessoController@setHorarioAcessoP
 Route::get('relatorios-pedidos','PedidosController@relatoriosView')->name('relatorios');
 Route::post('gerarRelatorio','PedidosController@relatorio');
 
+//LariMoro
+Route::get('relatorios-produtos','ProdutosController@relatoriosView')->name('relatorios-produtos');
+Route::post('gerarRelatorioPed','ProdutosController@relatorio');
+Route::post('gerarCSV2','PedidosController@gerarCSV');
+Route::post('imprimir_pedidosProd','ManutencaoController@imprimir_pedidosProd');
+//----/LariMoro
 
 Route::post('gerarCSV','PedidosController@gerarCSV');
 

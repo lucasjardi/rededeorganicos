@@ -44,7 +44,7 @@
 			          Relatórios
 			        </a>
 			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					  <a class="dropdown-item disabled" href="#">Produtos</a>
+					  <a class="dropdown-item " href="{{route('relatorios-produtos')}}">Produtos</a>
 			          <a class="dropdown-item" href="{{route('relatorios')}}">Pedidos</a>
 			        </div>
 			      </li>

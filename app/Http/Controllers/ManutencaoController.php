@@ -145,4 +145,16 @@ class ManutencaoController extends Controller
         },'st'])->whereIn('codigo', $pedidosIds)->get();
         return view('imprimir_pedido', ['pedidos' => $pedidos]);
     }
+    public function imprimir_pedidosProd(Request $request)
+    {
+        $pedidosJson = json_decode($request->pedidos, true);
+        
+        $pedidosIds = [];
+        foreach($pedidosJson as $key => $pedido){
+            array_push($pedidosIds, $pedido['codProduto']);
+        }
+
+        //$pedidos = Pedido::with('usuario','destino','itens')->whereIn('codigo', $pedidosIds)->get();
+        return view('imprimir_pedidoProd', ['pedidos' => $pedidosJson]);
+    }
 }
