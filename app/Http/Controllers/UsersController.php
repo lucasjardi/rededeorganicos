@@ -14,6 +14,8 @@ use App\ItemPedido;
 use App\Cesta;
 use App\StatusPedido;
 use App\User;
+use App\Destino;
+use App\ProdutoProduzido;
 use Auth;
 use Carbon\Carbon;
 use Jenssegers\Agent\Agent;
@@ -105,6 +107,18 @@ class UsersController extends Controller
         $this->validate($request, [
             'local_de_retirada' => 'required'
         ]);
+
+        $destino = Destino::where('codigo', $request->local_de_retirada)->first();
+
+        if ($destino && $destino->visibility === 0) {
+            \Session::flash('local_not_visible', 'Este local não está mais disponível, por favor tente outro local.');
+
+            if (\Session::has('localSelected')) {
+                \Session::forget('localSelected');
+            }
+
+            return back();
+        }
         
         $pedido = new Pedido([
             'codCliente' => $request->user()->id,
@@ -115,16 +129,23 @@ class UsersController extends Controller
         ]);
 
         if($pedido->save()){ // se salvou o pedido, salva os itens do pedido
-            $cestaUser = Cesta::where('user_id',$request->user()->id)->get();
+            $cestaUser = Cesta::leftJoin('prod_produzido', function ($query) { // só pega os produtos que tem na lista da semana
+                $query->on('prod_produzido.codProduto','=','cesta.produto_id')
+                    ->on('prod_produzido.codProdutor','=','cesta.codProdutor');
+            })->where('user_id',$request->user()->id)
+            ->select('cesta.*','prod_produzido.codigo')
+            ->get();
+
             foreach ($cestaUser as $cesta) {
                 $descricao = $cesta->quantidade." ". $cesta->unidade ." de ". $cesta->produto->nome;
                 ItemPedido::create([
                     'codPedido' => $pedido->codigo,
-                    'codProduto' => $cesta->produto->codigo,
+                    'codProduto' => $cesta->produto_id,
                     'codProdutor' => $cesta->codProdutor,
                     'quantidade' => $cesta->quantidade,
                     'valorTotal' => $cesta->subtotal,
-                    'descricao' => $descricao
+                    'descricao' => $descricao,
+                    'available' => $cesta->codigo ? 1 : 0
                 ]);
             }
 
@@ -133,6 +154,16 @@ class UsersController extends Controller
             }
 
             $pedido->load('itens','destino.desconto');
+
+            $pedidosNotAvailableSoma = 0;
+            $pedidosNotAvailableSoma = $pedido->itens->reduce(function ($carry, $item) {
+                return !$item->available ? ($carry + $item->valorTotal) : $carry + 0;
+            });
+
+            if ($pedidosNotAvailableSoma > 0) {
+                $pedido->valor = $request->total - $pedidosNotAvailableSoma;
+                $pedido->save();
+            }
 
             return view('solicitado',['pedido'=>$pedido]);
         }
@@ -222,15 +253,20 @@ class UsersController extends Controller
         $model = '';
         if($request->user()->codNivel === 5){
             $pedidos = Pedido::where('codCliente',$request->user()->id)
-                            ->with('itens.produtor.usuario:id,name','st','usuario')
+                            ->with(['itens' => function ($query) {
+                                $query->where('available', 1)->with('produtor.usuario:id,name');
+                            },'st','usuario'])
                             ->orderBy('dataPedido', false);
             $model='cliente';
         }
         if($request->user()->codNivel === 4){
-            $pedidos = Pedido::with('itens','st','usuario','itens.produtor')->whereHas('itens', function ($query){
+            $pedidos = Pedido::with(['itens' => function ($query) {
+                $query->where('available', 1)->with('produtor');
+            },'st','usuario'])
+            ->whereHas('itens', function ($query){
                 $query->whereHas('produtor', function ($query){
                     $query->where('codigo', Auth::id());
-                });
+                })->where('available', 1);
             })->whereHas('st', function ($query){
                 $query->where('descricao','Confirmado');
             })

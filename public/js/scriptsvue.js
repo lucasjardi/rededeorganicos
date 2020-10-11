@@ -29,7 +29,14 @@ Vue.component('card', {
     	    console.log(response);
     	    that.$root.$emit('pushed');
         })
-    	  .catch(error => console.log(error))
+    	  .catch(error => {
+          swal("Ops!", "Algo deu errado. Por favor, tente recarregar a página!", "error")
+          .then((ok) => {
+            if (ok) {
+              location.href='';
+            }
+          });
+        })
         .then(() => {
           this.btnDisabled = false;
           this.quantidade = '';

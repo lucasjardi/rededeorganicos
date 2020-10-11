@@ -79,6 +79,13 @@ class DestinosController extends Controller
     public function setLocalRetirada(Request $request)
     {
         if(Auth::user()->codNivel == 5) {
+            $destino = Destino::where('codigo', $request->destino)->first();
+
+            if ($destino && $destino->visibility === 0) {
+                \Session::flash('local_not_visible', 'ESTE LOCAL NÃO ESTÁ MAIS DISPONÍVEL. POR FAVOR, TENTE OUTRO LOCAL.');
+                return back();
+            }
+
             $produtos = DB::table('produto')
                     ->join('prod_produzido', 'produto.codigo', '=', 'prod_produzido.codProduto')
                     ->join('unidade', 'prod_produzido.codUnidade', '=', 'unidade.codigo')

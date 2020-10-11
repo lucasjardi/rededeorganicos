@@ -11,8 +11,12 @@
       @php $subTotal = 0; @endphp
       <b>Itens do Pedido:</b> <br>
       @foreach ($pedido->itens as $item)
-        - {{$item->descricao}} | R$ @dinheiro($item->valorTotal) <br>
-        @php $subTotal += $item->valorTotal; @endphp
+        <span style="display: flex">
+          @if (!$item->available)<s>@endif
+          - {{$item->descricao}} | R$ @dinheiro($item->valorTotal) <br>
+          @if (!$item->available)</s>&nbsp;(Não disponível no momento)@endif
+        </span>
+        @php if($item->available) { $subTotal += $item->valorTotal; } @endphp
       @endforeach
     <br>
     <b>SubTotal:</b> R$ @dinheiro($subTotal) <br>

@@ -42,9 +42,11 @@ class ItemPedidoController extends Controller
         
         $pedido = Pedido::find($item->codPedido);
 
-        $pedido->update([
-            "valor" => $pedido->valor - $item->valorTotal
-        ]);
+        if ($item->available) {
+            $pedido->update([
+                "valor" => $pedido->valor - $item->valorTotal
+            ]);
+        }
 
     	$item->delete();
 

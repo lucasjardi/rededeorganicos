@@ -133,7 +133,7 @@
                   <td> {{ $item->codProduto }}</td>
                   <td>{{ $item->quantidade }}</td>
                   <td>@dinheiro($item->valorTotal)</td>
-                  <td>{{ $item->descricao }}</td>
+                  <td>@if(!$item->available)<s>@endif{{ $item->descricao }}@if(!$item->available)</s>&nbsp;(Não disponível na lista no momento do pedido)@endif</td>
                   <td>{{ @$item->user ? $item->user->name : '(Não definido)' }}</td>
                   <td>
                       <a href="{{url('/itempedido/'.$item->codigo)}}"><i class="fa fa-times text-danger"></i></a>

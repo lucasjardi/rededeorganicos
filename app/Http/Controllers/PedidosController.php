@@ -158,7 +158,9 @@ class PedidosController extends Controller
         $pedido->update($request->all());
 
         if( $enviarEmailConfirmado ) {
-            $pedido->load('usuario', 'destino', 'itens');
+            $pedido->load(['usuario', 'destino', 'itens' => function ($query) {
+                $query->where('available', 1);
+            }]);
             Mail::to($pedido->usuario->email)->send(new PedidoConfirmado($pedido)); 
         }
 

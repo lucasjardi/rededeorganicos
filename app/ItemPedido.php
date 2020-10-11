@@ -18,7 +18,8 @@ class ItemPedido extends Model
     	'quantidade',
     	'valorTotal',
         'descricao',
-        'codProdutor'
+        'codProdutor',
+        'available'
     ];
 
 

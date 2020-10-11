@@ -45,6 +45,12 @@
       </table>
 
       <hr>
+      @if(Session::has('local_not_visible'))
+        <div class="alert alert-danger mt-3">
+          {{ Session::get('local_not_visible') }}
+        </div>
+      @endif
+
       @if (!isset($destino))
           <div class="alert alert-warning">
             Você ainda não escolheu seu local de retirada. 

@@ -39,6 +39,12 @@
     @endif
   </div>
 
+  @if(Session::has('local_not_visible'))
+    <div class="alert alert-danger mt-3">
+      {{ Session::get('local_not_visible') }}
+    </div>
+  @endif
+
   @if(Session::has('localSelected'))
   <div class="bg-white p-3 mb-3">
   <div class="row">

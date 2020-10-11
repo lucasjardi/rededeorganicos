@@ -125,7 +125,9 @@ class ManutencaoController extends Controller
 
     public function imprimirPedido(Request $request, Pedido $pedido)
     {
-        $pedido->load('usuario','cliente.cidade','destino','itens.produtor.usuario:id,name','st');
+        $pedido->load(['usuario','cliente.cidade','destino','itens' => function ($query) {
+            $query->where('available', 1)->with('produtor.usuario:id,name');
+        },'st']);
         return view('imprimir_pedido', ['pedidos' => [$pedido]]);
     }
 
@@ -138,7 +140,9 @@ class ManutencaoController extends Controller
             array_push($pedidosIds, $pedido['codigo']);
         }
 
-        $pedidos = Pedido::with('usuario','cliente.cidade','destino','itens.produtor.usuario:id,name','st')->whereIn('codigo', $pedidosIds)->get();
+        $pedidos = Pedido::with(['usuario','cliente.cidade','destino','itens' => function ($query) {
+            $query->where('available', 1)->with('produtor.usuario:id,name');
+        },'st'])->whereIn('codigo', $pedidosIds)->get();
         return view('imprimir_pedido', ['pedidos' => $pedidos]);
     }
 }
